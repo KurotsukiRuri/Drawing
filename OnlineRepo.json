@@ -1,0 +1,13 @@
+{
+  "name": "水水自己画着玩",
+  "author": "水水",
+  "description": "null",
+  "version": "1.0.0",
+  "scripts": [
+    {
+      "name": "M9N",
+      "description": "M9N drawing script",
+      "url": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/main/M9N.cs"
+    }
+  ]
+}
