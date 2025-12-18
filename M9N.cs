@@ -17,43 +17,90 @@ using System.Reflection;
 using Dalamud.Interface.Internal.UiDebug2.Browsing;
 using System.Runtime.CompilerServices;
 
-namespace Baka-Water77.M9N;
+
+namespace BakaWater77.M9N;
 [ScriptType(name: "M9N", territorys: [1320], guid: "",
-    version: "0.0.0.1", author: "Baka-Water77", note:noteStr)]
+    version: "0.0.0.1", author: "Baka-Water77", note: null)]
+
 
 public class M9N
-{
-    const string noteStr =
-    """
-    写着玩w
-    """;
+    {
+    public bool isText { get; set; } = true;
 
+    [ScriptMethod(name: "魅亡之音", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:regex:^([45921])$"])]
+    public void 魅亡之音(Event @event, ScriptAccessory accessory)
+    {
+        if (isText) accessory.Method.TextInfo("AOE", duration: 4700, true);
+        
+    }
+
+    [ScriptMethod(name: "以太流失", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:regex:^(45896)$"])]
+    public void 以太流失(Event @event, ScriptAccessory accessory)
+    {
+        if (!ParseObjectId(@event["TargetId"], out var tid)) return;
+        var playerObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
+        if (playerObj == null) return;
+
+        float rotation = playerObj.Rotation;
+
+
+        var dp1 = accessory.Data.GetDefaultDrawProperties();//前后
+        dp1.Name = "以太流失";
+        dp1.Scale = new Vector2(6,40);
+        dp1.ScaleMode = ScaleMode.ByTime;
+        dp1.Owner = tid;
+        dp1.Color = accessory.Data.DefaultDangerColor;
+        dp1.DestoryAt = 5000;
+        dp1.Rotation = rotation;
+        accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp1);
+        
+        var dp2 = accessory.Data.GetDefaultDrawProperties();//左右
+        dp2.Name = "以太流失";
+        dp2.Scale = new Vector2(6, 40);
+        dp2.Rotation = rotation + MathF.PI / 2;
+        dp1.Color = accessory.Data.DefaultDangerColor;
+        dp1.DestoryAt = 5000;
+        accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp2);
+
+    }
+    [ScriptMethod(name: "施虐的尖啸", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:regex:^([45875])$"])]
+    public void 施虐的尖啸(Event @event, ScriptAccessory accessory)
+    {
+        if (isText) accessory.Method.TextInfo("AOE", duration: 4700, true);
+
+    }
+    [ScriptMethod(name: "共振波", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:regex:^([45901])$"])]
+    public void 共振波(Event @event, ScriptAccessory accessory)
+    {
+        var dp = accessory.Data.GetDefaultDrawProperties();
+        dp.Name = "共振波";
+        dp.Color = new Vector4(1.0f, 1.0f, 0.0f, 0.5f);
+        dp.ScaleMode = ScaleMode.ByTime;
+        dp.Position = @event.SourcePosition();
+        dp.Scale = new Vector2(8);
+        dp.DestoryAt = 7700;
+        accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+    }
+    private static bool ParseObjectId(string? idStr, out uint id)
+    {
+        id = 0;
+        if (string.IsNullOrEmpty(idStr)) return false;
+        try
+        {
+            var idStr2 = idStr.Replace("0x", "");
+            id = uint.Parse(idStr2, System.Globalization.NumberStyles.HexNumber);
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+    public static Vector3 SourcePosition(this Event @event)
+    {
+        return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
+    }
+}
 
 }
-[ScriptMethod(name: "月之半相", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:37714"])]
-    public void DoubleEdgedSwords(Event @event, ScriptAccessory accessory)
-    {
-        if (DoubleEdgedSwordsCount == 0)
-        {
-            if (isDebug) accessory.Method.SendChat($"/e SourceRotation: {@event.SourceRotation()}");
-            if (isText) accessory.Method.TextInfo($"去Boss{((@event.SourceRotation() == 3.14f) ? "后" : "前")}面，然后准备对穿", duration: 4500, true);
-            accessory.TTS($"去Boss{((@event.SourceRotation() == 3.14f) ? "后" : "前")}面，然后准备对穿", isTTS, isDRTTS);
-        }
 
-        DoubleEdgedSwordsCount++;
-        if (DoubleEdgedSwordsCount == 2)
-        {
-            DoubleEdgedSwordsCount = 0;
-        }
-
-        var dp = accessory.Data.GetDefaultDrawProperties();
-
-        dp.Name = "DoubleEdged Swords";
-        dp.Color = new Vector4(255 / 255.0f, 0 / 255.0f, 0 / 255.0f, 0.5f);
-        dp.ScaleMode = ScaleMode.ByTime;
-        dp.Owner = @event.SourceId();
-        dp.Scale = new Vector2(30);
-        dp.Radian = float.Pi / 180 * 180;
-        dp.DestoryAt = 4700;
-        accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Fan, dp);
-    }
