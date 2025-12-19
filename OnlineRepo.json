@@ -8,6 +8,17 @@
         "TerritoryIds": [1320],
         "Note": "无",
         "UpdateInfo": "v0.0.0.1:\n    测试版本"
+    },
+    {
+        "Name": "HW",
+        "Guid": "AF4E8C43-08BA-4C98-8DEF-70F023AF234D",
+        "Version": "0.0.0.1",
+        "Author": "Baka-Water77",
+        "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/HW.cs",
+        "TerritoryIds": [],
+        "Note": "无",
+        "UpdateInfo": "v0.0.0.1:\n    测试版本"
     }
 ]
+
 
