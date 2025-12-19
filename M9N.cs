@@ -16,6 +16,7 @@ using System.Timers;
 using System.Reflection;
 using Dalamud.Interface.Internal.UiDebug2.Browsing;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 
 namespace BakaWater77.M9N;
@@ -33,25 +34,27 @@ public class M9N
     private static readonly Vector3 Center = new Vector3(100, 0, 100);
     private AutoResetEvent _nightFallAutoEvent = new AutoResetEvent(false);
 
+    public static class EventExtensions
+    {
+        public static Vector3 SourcePosition(this Event @event)
+        {
+            return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
+        }
+    }
+
 
     public bool isText { get; set; } = true;
 
-    public void Init(ScriptAccessory sa)
-    {
-        // sa.Log.Debug($"M9N {Version}{DebugVersion} 刷新");
-        RefreshParams();
-        sa.Method.RemoveDraw(".*");
-        sa.Method.ClearFrameworkUpdateAction(this);
-    }
+    
 
-    [ScriptMethod(name: "魅亡之音", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:regex:^([45921])$"]), userControl: true]
+    [ScriptMethod(name: "魅亡之音", eventType: EventTypeEnum.StartCasting, eventCondition: new[] { "ActionId:regex:^([45921])$" })]
     public void 魅亡之音(Event @event, ScriptAccessory accessory)
     {
         if (isText) accessory.Method.TextInfo("AOE", duration: 4700, true);
         
     }
 
-    [ScriptMethod(name: "以太流失", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:regex:^(45896)$"])]
+    [ScriptMethod(name: "以太流失", eventType: EventTypeEnum.StartCasting, eventCondition: new[] { "ActionId:regex:^([45896])$" })]
     public void 以太流失(Event @event, ScriptAccessory accessory)
     {
         if (!ParseObjectId(@event["TargetId"], out var tid)) return;
@@ -81,13 +84,13 @@ public class M9N
         accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp2);
 
     }
-    [ScriptMethod(name: "施虐的尖啸", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:regex:^([45875])$"])]
+    [ScriptMethod(name: "施虐的尖啸", eventType: EventTypeEnum.StartCasting, eventCondition: new[] { "ActionId:regex:^([45875])$" })]
     public void 施虐的尖啸(Event @event, ScriptAccessory accessory)
     {
         if (isText) accessory.Method.TextInfo("AOE", duration: 4700, true);
 
     }
-    [ScriptMethod(name: "共振波", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:regex:^([45901])$"])]
+    [ScriptMethod(name: "共振波", eventType: EventTypeEnum.StartCasting, eventCondition: new[] { "ActionId:regex:^([45901])$" })]
     public void 共振波(Event @event, ScriptAccessory accessory)
     {
         var dp = accessory.Data.GetDefaultDrawProperties();
@@ -99,25 +102,8 @@ public class M9N
         dp.DestoryAt = 7700;
         accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
     }
-    private static bool ParseObjectId(string? idStr, out uint id)
-    {
-        id = 0;
-        if (string.IsNullOrEmpty(idStr)) return false;
-        try
-        {
-            var idStr2 = idStr.Replace("0x", "");
-            id = uint.Parse(idStr2, System.Globalization.NumberStyles.HexNumber);
-            return true;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-    }
-    public static Vector3 SourcePosition(this Event @event)
-    {
-        return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
-    }
+    
+    
 }
 
 }
