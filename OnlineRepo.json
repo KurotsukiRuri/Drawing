@@ -7,7 +7,7 @@
         "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/M9N.cs",
         "TerritoryIds": [1320],
         "Note": "无",
-        "UpdateInfo": "v0.0.0.1:\n    测试版本"
+        "UpdateInfo": "v0.0.0.2:\n    测试版本 更新了几个AOE播放 尝试修复以太流失的十字绘制 尝试添加半场刀"
     },
     {
         "Name": "HW",
@@ -20,6 +20,7 @@
         "UpdateInfo": "v0.0.0.1:\n    测试版本"
     }
 ]
+
 
 
 
