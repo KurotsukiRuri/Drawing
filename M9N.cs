@@ -14,17 +14,12 @@ namespace BakaWater77.M9N
         version: "0.0.0.1", author: "Baka-Water77", note: null)]
     public class M9N
     {
-        // 全局脚本开关
-        public bool ScriptEnabled { get; set; } = true;
-
-        // 文本提醒开关
+        // 文本提醒开关（保留文本功能）
         public bool isText { get; set; } = true;
 
         [ScriptMethod(name: "魅亡之音", eventType: EventTypeEnum.StartCasting, eventCondition: new[] { "ActionId:regex:^([45921])$" })]
         public void 魅亡之音(Event @event, ScriptAccessory accessory)
         {
-            if (!ScriptEnabled) return;
-
             if (isText)
                 accessory.Method.TextInfo("AOE", duration: 4700, force: true);
         }
@@ -32,8 +27,6 @@ namespace BakaWater77.M9N
         [ScriptMethod(name: "以太流失", eventType: EventTypeEnum.StartCasting, eventCondition: new[] { "ActionId:regex:^(45896)$" })]
         public void 以太流失(Event @event, ScriptAccessory accessory)
         {
-            if (!ScriptEnabled) return;
-
             if (!@event["TargetId"].ParseObjectId(out var tid)) return;
 
             var playerObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
@@ -63,8 +56,6 @@ namespace BakaWater77.M9N
         [ScriptMethod(name: "施虐的尖啸", eventType: EventTypeEnum.StartCasting, eventCondition: new[] { "ActionId:regex:^([45875])$" })]
         public void 施虐的尖啸(Event @event, ScriptAccessory accessory)
         {
-            if (!ScriptEnabled) return;
-
             if (isText)
                 accessory.Method.TextInfo("AOE", duration: 4700, force: true);
         }
@@ -72,8 +63,6 @@ namespace BakaWater77.M9N
         [ScriptMethod(name: "共振波", eventType: EventTypeEnum.StartCasting, eventCondition: new[] { "ActionId:regex:^([45901])$" })]
         public void 共振波(Event @event, ScriptAccessory accessory)
         {
-            if (!ScriptEnabled) return;
-
             var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "共振波";
             dp.Color = new Vector4(1f, 1f, 0f, 0.5f);
