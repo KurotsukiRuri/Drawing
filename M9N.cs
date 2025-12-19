@@ -32,7 +32,7 @@ namespace BakaWater77.M9N
         [ScriptMethod(name: "以太流失", eventType: EventTypeEnum.StartCasting, eventCondition: new[] { "ActionId:regex:^([45896])$" })]
         public void 以太流失(Event @event, ScriptAccessory accessory)
         {
-            if (!M9NExtensions.ParseObjectId(@event["TargetId"], out var tid)) return;
+            if (!@event["TargetId"].ParseObjectId(out var tid)) return;
             var playerObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
             if (playerObj == null) return;
 
@@ -78,9 +78,16 @@ namespace BakaWater77.M9N
         }
     }
 
-    // 顶级静态类，存放扩展方法
     public static class M9NExtensions
     {
+        public static Vector3 SourcePosition(this Event @event)
+        {
+            if (@event == null || string.IsNullOrEmpty(@event["SourcePosition"]))
+                return Vector3.Zero;
+
+            return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]) ?? Vector3.Zero;
+        }
+
         public static bool ParseObjectId(this string? idStr, out uint id)
         {
             id = 0;
@@ -91,18 +98,7 @@ namespace BakaWater77.M9N
                 id = uint.Parse(idStr2, System.Globalization.NumberStyles.HexNumber);
                 return true;
             }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static Vector3 SourcePosition(this Event @event)
-        {
-            if (@event == null || string.IsNullOrEmpty(@event["SourcePosition"]))
-                return Vector3.Zero;
-
-            return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]) ?? Vector3.Zero;
+            catch { return false; }
         }
     }
 }
