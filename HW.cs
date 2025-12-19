@@ -15,13 +15,9 @@ namespace HelloWorld;
 )]
 public class HelloWorld
 {
-    [ScriptMethod(
-        name: "HelloWorld",
-        eventType: EventTypeEnum.StartCasting,
-        eventCondition: ["ActionId:24286"]
-    )]
-    public void HelloWorldCast(Event @event, ScriptAccessory accessory)
-    {
-        accessory.Method.TextInfo("Hello World!", 5000);
-    }
+   [ScriptMethod(name: "SampleMethod", eventType: EventTypeEnum.StartCasting, eventCondition: ["ActionId:24286"])]
+public void SampleMethod(Event @event, ScriptAccessory accessory)
+{   
+	accessory.Method.TextInfo("Hello World!", 5000);
+}
 }
