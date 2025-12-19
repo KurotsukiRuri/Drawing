@@ -1,11 +1,19 @@
 using System;
-using System.Linq;
 using System.Numerics;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Threading;
-using KodakkuAssist.Script;
+using System.Collections.Generic;
+using System.Linq;
+using KodakkuAssist.Data;
 using KodakkuAssist.Module.Draw;
+using KodakkuAssist.Module.Draw.Manager;
+using KodakkuAssist.Module.GameEvent;
+using KodakkuAssist.Module.GameOperate;
+using KodakkuAssist.Script;
+using KodakkuAssist.Extensions;
+using Newtonsoft.Json;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using KodakkuAssist.Module.Script.Type;
 
 namespace BakaWater77.M9N
 {
@@ -102,3 +110,4 @@ namespace BakaWater77.M9N
         }
     }
 }
+
