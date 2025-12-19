@@ -19,7 +19,7 @@ using System.Runtime.CompilerServices;
 
 
 namespace BakaWater77.M9N;
-[ScriptType(name: "M9N", territorys: [1320], guid: "",
+[ScriptType(name: "M9N", territorys: [1320], guid: "9af9ac60-1d6e-4247-a144-c6273417fea9",
     version: "0.0.0.1", author: "Baka-Water77", note: null)]
 
 
@@ -103,4 +103,5 @@ public class M9N
 }
 
 }
+
 
