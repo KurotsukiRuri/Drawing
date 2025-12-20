@@ -169,30 +169,24 @@ public class M9N
     #endregion
 
     [ScriptMethod(
-        name: "以太流失",
+        name: "以太流失",//实际上是地上的那几根黄条|||||||
         eventType: EventTypeEnum.ActionEffect,
-        eventCondition: new[] { "ActionId:regex:^(45896)$" }
+        eventCondition: new[] { "ActionId:regex:^(45897)$" }
     )]
     public void AOElineAfter(Event @event, ScriptAccessory accessory)
     {
-        if (!ParseObjectId(@event["TargetId"], out var tid)) return;
-        var playerObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
-        if (playerObj == null) return;
-
-        Vector3 fixedPosition = playerObj.Position;
-        float rotation = playerObj.Rotation;
-        uint ownerId = tid;
+        Vector3 center = @event.SourcePosition();
+        float baseRotation = @event.SourceRotation();
 
         // 绘制固定十字AOE，持续7秒
-        DrawAOELines(accessory, ownerId, fixedPosition, rotation, temporary: true, duration: 7000);
+        DrawAOELines(accessory, center, baseRotation, duration: 7000);
 
     }
 
-    private void DrawAOELines(ScriptAccessory accessory, uint ownerId, Vector3 position, float rotation, bool temporary, int duration = 0)
-    {
-        int destroyTime = temporary ? duration : 0; 
-        Vector2 scale = new Vector2(6, 40);
-        var color = accessory.Data.DefaultDangerColor;
+        private void DrawAOELines(ScriptAccessory accessory, Vector3 position, float rotation,int duration = 0)
+        {   
+            Vector2 scale = new Vector2(6, 40);
+            var color = accessory.Data.DefaultDangerColor;
 
         float[] rotations = { rotation, rotation + MathF.PI, rotation + MathF.PI / 2, rotation - MathF.PI / 2 };
 
@@ -201,12 +195,11 @@ public class M9N
             var dp = accessory.Data.GetDefaultDrawProperties();
 
             dp.Name = "以太流失";
-            dp.Position = position;
-            dp.Owner = ownerId;
+            dp.Position = new Vector3(position.X,0f, position.Z); 
             dp.Scale = scale;
             dp.Rotation = rot;
             dp.Color = color;
-            dp.DestoryAt = destroyTime;
+            dp.DestoryAt = duration;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp);
         }
     }
