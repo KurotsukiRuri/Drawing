@@ -30,7 +30,7 @@ namespace BakaWater77.M9N;
     name: "M9N",
     territorys: new uint[] { 1320 },
     guid: "9af9ac60-1d6e-4247-a144-c6273417fea9",
-    version: "0.0.0.5",
+    version: "0.0.0.6",
     author: "Baka-Water77",
     note: null
 )]
@@ -296,3 +296,4 @@ public static class EventExtensions
         return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
     }
 }
+
