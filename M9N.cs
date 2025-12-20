@@ -132,7 +132,7 @@ public class M9N
         dp.Owner = sid;
         dp.Scale = new Vector2(60, 60);
         dp.ScaleMode = ScaleMode.ByTime;
-        dp.Rotation = sourceObj.Rotation + MathF.PI / 2;
+        dp.Rotation = sourceObj.Rotation - MathF.PI / 2;
         dp.Offset = new Vector3(4, 0, 0); // 修正
         dp.Color = accessory.Data.DefaultDangerColor;
         dp.DestoryAt = 4000;
@@ -160,7 +160,7 @@ public class M9N
         dp.Owner = sid;
         dp.Scale = new Vector2(60, 60);
         dp.ScaleMode = ScaleMode.ByTime;
-        dp.Rotation = sourceObj.Rotation - MathF.PI / 2;
+        dp.Rotation = sourceObj.Rotation + MathF.PI / 2;
         dp.Offset = new Vector3(-4, 0, 0); // 修正
         dp.Color = accessory.Data.DefaultDangerColor;
         dp.DestoryAt = 4000;
