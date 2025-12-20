@@ -2,7 +2,7 @@
     {
         "Name": "M9N",
         "Guid": "9af9ac60-1d6e-4247-a144-c6273417fea9",
-        "Version": "0.0.0.8",
+        "Version": "0.0.0.9",
         "Author": "Baka-Water77",
         "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/M9N.cs",
         "TerritoryIds": [1320],
@@ -20,6 +20,7 @@
         "UpdateInfo": "v0.0.0.1:\n    测试版本"
     }
 ]
+
 
 
 
