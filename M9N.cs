@@ -30,7 +30,7 @@ namespace BakaWater77.M9N;
     name: "M9N",
     territorys: new uint[] { 1320 },
     guid: "9af9ac60-1d6e-4247-a144-c6273417fea9",
-    version: "0.0.0.7",
+    version: "0.0.0.8",
     author: "Baka-Water77",
     note: null
 )]
@@ -171,7 +171,7 @@ public class M9N
         public void 以太流失(Event @event, ScriptAccessory accessory)
         {
 
-            Vector3 center = @event.EffectPosition();
+            Vector3 center = @event.SourcePosition();
             float rotation = @event.SourceRotation();
 
             DrawCrossAOE(accessory, center, rotation, 5000);
