@@ -171,9 +171,7 @@ public class M9N
     public void 以太流失(Event @event, ScriptAccessory accessory)
     {
         float rotation = @event.SourceRotation();
-        uint targetId;
-
-        if (!ParseObjectId(@event["TargetId"], out targetId))
+        if (!ParseObjectId(@event["TargetId"], out uint targetId))
             return;
 
         Task.Run(async () =>
