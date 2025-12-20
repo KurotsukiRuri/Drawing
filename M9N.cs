@@ -68,7 +68,7 @@ public class M9N
     public void 月之半相左(Event @event, ScriptAccessory accessory)
     {
         if (isText)
-            accessory.Method.TextInfo("先去 左 稍后对穿", duration: 4700, true);
+            accessory.Method.TextInfo("先去 右 稍后对穿", duration: 4700, true);
 
         if (!ParseObjectId(@event["SourceId"], out var sid)) return;
         var sourceObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == sid);
@@ -77,7 +77,7 @@ public class M9N
         var dp = accessory.Data.GetDefaultDrawProperties();
         dp.Name = "月之半相左";
         dp.Owner = sid;
-        dp.Scale = new Vector2(40, 40);
+        dp.Scale = new Vector2(60, 60);
         dp.ScaleMode = ScaleMode.ByTime;
         dp.Rotation = sourceObj.Rotation - MathF.PI / 2;
         dp.Color = accessory.Data.DefaultDangerColor;
@@ -94,7 +94,7 @@ public class M9N
     public void 月之半相右(Event @event, ScriptAccessory accessory)
     {
         if (isText)
-            accessory.Method.TextInfo("先去 右 稍后对穿", duration: 4700, true);
+            accessory.Method.TextInfo("先去 左 稍后对穿", duration: 4700, true);
 
         if (!ParseObjectId(@event["SourceId"], out var sid)) return;
         var sourceObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == sid);
@@ -103,7 +103,7 @@ public class M9N
         var dp = accessory.Data.GetDefaultDrawProperties();
         dp.Name = "月之半相右";
         dp.Owner = sid;
-        dp.Scale = new Vector2(40, 40);
+        dp.Scale = new Vector2(60, 60);
         dp.ScaleMode = ScaleMode.ByTime;
         dp.Rotation = sourceObj.Rotation + MathF.PI / 2;
         dp.Color = accessory.Data.DefaultDangerColor;
@@ -130,7 +130,7 @@ public class M9N
         var dp = accessory.Data.GetDefaultDrawProperties();
         dp.Name = "大左半场刀";
         dp.Owner = sid;
-        dp.Scale = new Vector2(40, 40);
+        dp.Scale = new Vector2(60, 60);
         dp.ScaleMode = ScaleMode.ByTime;
         dp.Rotation = sourceObj.Rotation + MathF.PI / 2;
         dp.Offset = new Vector3(4, 0, 0); // 修正
@@ -158,7 +158,7 @@ public class M9N
         var dp = accessory.Data.GetDefaultDrawProperties();
         dp.Name = "大右半场刀";
         dp.Owner = sid;
-        dp.Scale = new Vector2(40, 40);
+        dp.Scale = new Vector2(60, 60);
         dp.ScaleMode = ScaleMode.ByTime;
         dp.Rotation = sourceObj.Rotation - MathF.PI / 2;
         dp.Offset = new Vector3(-4, 0, 0); // 修正
@@ -179,16 +179,17 @@ public class M9N
         var playerObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
         if (playerObj == null) return;
 
-        float rotation = playerObj.Rotation;
+        Vector3 fixedPosition = playerObj.Position;
+        float fixedRotation = playerObj.Rotation;
         uint ownerId = tid;
 
         // 绘制固定十字AOE，持续7秒
         DrawAOELines(accessory, ownerId, rotation, temporary: true, duration: 7000);
     }
 
-    private void DrawAOELines(ScriptAccessory accessory, uint ownerId, float rotation, bool temporary, int duration = 0)
+    private void DrawAOELines(ScriptAccessory accessory, uint ownerId, Vector3 position, float rotation, bool temporary, int duration = 0)
     {
-        int destroyTime = temporary ? duration : 0;
+        int destroyTime = temporary ? duration : 0; 
         Vector2 scale = new Vector2(6, 40);
         var color = accessory.Data.DefaultDangerColor;
 
@@ -207,6 +208,8 @@ public class M9N
         }
     }
 
+
+    //AOE
     [ScriptMethod(
         name: "施虐的尖啸",
         eventType: EventTypeEnum.StartCasting,
@@ -218,21 +221,6 @@ public class M9N
             accessory.Method.TextInfo("AOE", duration: 4700, true);
     }
 
-    [ScriptMethod(
-        name: "共振波",
-        eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(45901)$" }
-    )]
-    public void 共振波(Event @event, ScriptAccessory accessory)
-    {
-        var dp = accessory.Data.GetDefaultDrawProperties();
-        dp.Name = "共振波";
-        dp.Color = new Vector4(1f, 1f, 0f, 0.5f);
-        dp.Position = @event.SourcePosition();
-        dp.Scale = new Vector2(8);
-        dp.DestoryAt = 2000;
-        accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-    }
 
     [ScriptMethod(
         name: "魅亡之音",
