@@ -176,7 +176,7 @@ public class M9N
 
         Task.Run(async () =>
         {
-            await Task.Delay(6700);
+            
 
             var targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == targetId);
             if (targetObj == null) return;
