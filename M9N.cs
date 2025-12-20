@@ -164,21 +164,20 @@ public class M9N
     #endregion
 
     [ScriptMethod(
-        name: "以太流失",//实际上是地上的那几根黄条TAT|||||||
+        name: "碎烂脉冲",//实际上是地上的那几根黄条TAT|||||||
         eventType: EventTypeEnum.ActionEffect,
-        eventCondition: new[] { "ActionId:regex:^(45897)$" }
+        eventCondition: new[] { "ActionId:regex:^(45894)$" }
     )]
-    public void AOElineAfter(Event @event, ScriptAccessory accessory)
+    public void 碎烂脉冲(Event @event, ScriptAccessory accessory)
     {
-        Vector3 center = @event.SourcePosition();
-        float baseRotation = @event.SourceRotation();
+        Vector3 center = @event.EffectPosition();
+        float rotation = @event.SourceRotation();
 
-        // 绘制固定十字AOE，持续7秒
-        DrawAOELines(accessory, center, baseRotation, duration: 7000);
+        DrawCrossAOE(accessory, center, rotation, 5000);
 
     }
 
-        private void DrawAOELines(ScriptAccessory accessory, Vector3 position, float rotation,int duration = 0)
+        private void DrawCrossAOE(ScriptAccessory accessory, Vector3 position, float rotation,int duration = 0)
         {   
             Vector2 scale = new Vector2(6, 40);
             var color = accessory.Data.DefaultDangerColor;
@@ -189,7 +188,7 @@ public class M9N
         {
             var dp = accessory.Data.GetDefaultDrawProperties();
 
-            dp.Name = "以太流失";
+            dp.Name = "碎烂脉冲";
             dp.Position = new Vector3(position.X,0f, position.Z); 
             dp.Scale = scale;
             dp.Rotation = rot;
@@ -281,5 +280,9 @@ public static class EventExtensions
     public static uint SourceDataId(this Event @event)
     {
         return uint.Parse(@event["SourceDataId"]);
+    }
+    public static Vector3 EffectPosition(this Event @event)
+    {
+        return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
     }
 }
