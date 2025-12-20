@@ -164,7 +164,7 @@ public class M9N
     #endregion
 
     [ScriptMethod(
-        name: "以太流失",//实际上是地上的那几根黄条|||||||
+        name: "以太流失",//实际上是地上的那几根黄条TAT|||||||
         eventType: EventTypeEnum.ActionEffect,
         eventCondition: new[] { "ActionId:regex:^(45897)$" }
     )]
