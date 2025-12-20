@@ -30,7 +30,7 @@ namespace BakaWater77.M9N;
     name: "M9N",
     territorys: new uint[] { 1320 },
     guid: "9af9ac60-1d6e-4247-a144-c6273417fea9",
-    version: "0.0.0.8",
+    version: "0.0.0.9",
     author: "Baka-Water77",
     note: null
 )]
@@ -165,21 +165,32 @@ public class M9N
 
         [ScriptMethod(
             name: "以太流失",//实际上是地上的那几根黄条TAT|||||||，以太流失之后的预警黄线
-            eventType: EventTypeEnum.ActionEffect,
-            eventCondition: new[] { "ActionId:regex:^(45897)$" }
+            eventType: EventTypeEnum.StartCasting,
+            eventCondition: new[] { "ActionId:regex:^(45897)$" }//这个是实际判定出来的那个AOE
         )]
         public void 以太流失(Event @event, ScriptAccessory accessory)
         {
 
-            Vector3 center = @event.SourcePosition();
-            float rotation = @event.SourceRotation();
+            
+            float rotation = @event.SourceRotation(); 
+            uint targetId = 0;
+        if (!ParseObjectId(@event["TargetId"], out var targetId))
+            return;
 
-            DrawCrossAOE(accessory, center, rotation, 5000);
-    
+        Task.Run(async () =>
+        {
+            await Task.Delay(6700);
 
-        }
+            vvar targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == targetId);
+            if (targetObj == null) return;
 
-        private void DrawCrossAOE(ScriptAccessory accessory, Vector3 position, float rotation,int duration = 0)
+            Vector3 targetPos = targetObj.Position;
+
+            DrawCrossAOE(accessory, targetPos, rotation, 5000);
+        });
+    }
+
+    private void DrawCrossAOE(ScriptAccessory accessory, Vector3 position, float rotation,int duration = 0)
             {   
                 Vector2 scale = new Vector2(6, 40);
                 var color = accessory.Data.DefaultDangerColor;
