@@ -174,16 +174,14 @@ public class M9N
         if (!ParseObjectId(@event["TargetId"], out uint targetId))
             return;
 
-        Task.Run(async () =>
+        Task.Run(() =>
         {
-            
-
             var targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == targetId);
             if (targetObj == null) return;
 
             Vector3 targetPos = targetObj.Position;
 
-            DrawCrossAOE(accessory, targetPos, rotation, 5000);
+            DrawCrossAOE(accessory, targetPos, rotation, 7000);
         });
     }
 
