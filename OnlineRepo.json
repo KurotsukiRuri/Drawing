@@ -2,12 +2,12 @@
     {
         "Name": "M9N",
         "Guid": "9af9ac60-1d6e-4247-a144-c6273417fea9",
-        "Version": "0.0.0.5",
+        "Version": "0.0.0.6",
         "Author": "Baka-Water77",
         "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/M9N.cs",
         "TerritoryIds": [1320],
         "Note": "无",
-        "UpdateInfo": "v0.0.0.3:\n    测试版本 v0.0.0.2更新了几个AOE播放 尝试修复以太流失的十字绘制 尝试添加半场刀v0.0.3尝试优化以太流失AOE绘制逻辑 修复半场刀画反（） 尝试修复大半场刀绘制不显示 v0.0.0.4尝试修复以太流失之后的十字AOE 0.0.0.5尝试绘制碎烂脉冲十字AOE（终于发现来了原来那个十字AOE不是以太流失放的呀）（）"
+        "UpdateInfo": "v0.0.0.3:\n    测试版本 v0.0.0.2更新了几个AOE播放 尝试修复以太流失的十字绘制 尝试添加半场刀v0.0.3尝试优化以太流失AOE绘制逻辑 修复半场刀画反（） 尝试修复大半场刀绘制不显示 v0.0.0.6尝试修复以太流失之后的十字AOE"
     },
     {
         "Name": "HW",
@@ -20,6 +20,7 @@
         "UpdateInfo": "v0.0.0.1:\n    测试版本"
     }
 ]
+
 
 
 
