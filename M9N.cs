@@ -199,7 +199,9 @@ public class M9N
         foreach (var rot in rotations)
         {
             var dp = accessory.Data.GetDefaultDrawProperties();
+
             dp.Name = "以太流失";
+            dp.Position = position;
             dp.Owner = ownerId;
             dp.Scale = scale;
             dp.Rotation = rot;
