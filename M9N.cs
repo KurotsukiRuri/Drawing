@@ -30,7 +30,7 @@ namespace BakaWater77.M9N;
     name: "M9N",
     territorys: new uint[] { 1320 },
     guid: "9af9ac60-1d6e-4247-a144-c6273417fea9",
-    version: "0.0.0.5",
+    version: "0.0.0.6",
     author: "Baka-Water77",
     note: null
 )]
@@ -164,20 +164,30 @@ public class M9N
     #endregion
 
     [ScriptMethod(
-        name: "碎烂脉冲",//实际上是地上的那几根黄条TAT|||||||
+        name: "以太流失",//实际上是地上的那几根黄条TAT|||||||，以太流失之后的预警黄线
         eventType: EventTypeEnum.ActionEffect,
-        eventCondition: new[] { "ActionId:regex:^(45894)$" }
+        eventCondition: new[] { "ActionId:regex:^(45897)$" }
     )]
-    public void 碎烂脉冲(Event @event, ScriptAccessory accessory)
+    public void 以太流失(Event @event, ScriptAccessory accessory)
     {
-        Vector3 center = @event.EffectPosition();
+
+
+        if (!ParseObjectId(@event["TargetId"], out var tid)) return;
+        
+
+        var targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
+
+        if (targetObj == null) return;
+
+        Vector3 center = targetObj.Position;
         float rotation = @event.SourceRotation();
 
         DrawCrossAOE(accessory, center, rotation, 5000);
+    
 
     }
 
-        private void DrawCrossAOE(ScriptAccessory accessory, Vector3 position, float rotation,int duration = 0)
+    private void DrawCrossAOE(ScriptAccessory accessory, Vector3 position, float rotation,int duration = 0)
         {   
             Vector2 scale = new Vector2(6, 40);
             var color = accessory.Data.DefaultDangerColor;
@@ -188,7 +198,7 @@ public class M9N
         {
             var dp = accessory.Data.GetDefaultDrawProperties();
 
-            dp.Name = "碎烂脉冲";
+            dp.Name = "以太流失";
             dp.Position = new Vector3(position.X,0f, position.Z); 
             dp.Scale = scale;
             dp.Rotation = rot;
@@ -286,4 +296,3 @@ public static class EventExtensions
         return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
     }
 }
-
