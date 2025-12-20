@@ -23,15 +23,10 @@ using Lumina.Excel.Sheets;
 
 namespace BakaWater77.M9N;
 
-public static class EventExtensions
-{
-    public static Vector3 SourcePosition(this Event @event)
-    {
-        return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
-    }
-}
 
-[ScriptType(
+
+
+    [ScriptType(
     name: "M9N",
     territorys: new uint[] { 1320 },
     guid: "9af9ac60-1d6e-4247-a144-c6273417fea9",
@@ -264,5 +259,27 @@ public class M9N
     {
         if (isText)
             accessory.Method.TextInfo("AOE", duration: 4700, true);
+    }
+}
+
+
+
+
+
+
+
+public static class EventExtensions
+{
+    public static Vector3 SourcePosition(this Event @event)
+    {
+        return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
+    }
+    public static float SourceRotation(this Event @event)
+    {
+        return float.Parse(@event["SourceRotation"]);
+    }
+    public static uint SourceDataId(this Event @event)
+    {
+        return uint.Parse(@event["SourceDataId"]);
     }
 }
