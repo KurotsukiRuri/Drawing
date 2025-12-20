@@ -175,8 +175,8 @@ public class M9N
     )]
     public void AOElineAfter(Event @event, ScriptAccessory accessory)
     {
-        Vector3 center = @event.SourcePosition;
-        float baseRotation = @event.SourceRotation;
+        Vector3 center = @event.SourcePosition();
+        float baseRotation = @event.SourceRotation();
 
         // 绘制固定十字AOE，持续7秒
         DrawAOELines(accessory, center, baseRotation, duration: 7000);
