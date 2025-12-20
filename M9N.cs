@@ -164,7 +164,7 @@ public class M9N
         #endregion
 
         [ScriptMethod(
-            name: "以太流失",//实际上是地上的那几根黄条TAT|||||||，以太流失之后的预警黄线
+            name: "以太流失",
             eventType: EventTypeEnum.StartCasting,
             eventCondition: new[] { "ActionId:regex:^(45897)$" }//这个是实际判定出来的那个AOE
         )]
@@ -247,7 +247,7 @@ public class M9N
     [ScriptMethod(
         name: "致命的闭幕曲",
         eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(45888)$" },
+        eventCondition: new[] { "ActionId:regex:^(45888|45890)$" },
         userControl: true
     )]
     public void 致命的闭幕曲(Event @event, ScriptAccessory accessory)
