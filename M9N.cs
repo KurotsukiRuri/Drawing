@@ -168,19 +168,19 @@ public class M9N
             eventType: EventTypeEnum.StartCasting,
             eventCondition: new[] { "ActionId:regex:^(45897)$" }//这个是实际判定出来的那个AOE
         )]
-        public void 以太流失(Event @event, ScriptAccessory accessory)
-        {
+    public void 以太流失(Event @event, ScriptAccessory accessory)
+    {
+        float rotation = @event.SourceRotation();
+        uint targetId;
 
-            
-            float rotation = @event.SourceRotation(); 
-            uint targetId;
-        if (!ParseObjectId(@event["TargetId"], out targetId)) return;
+        if (!ParseObjectId(@event["TargetId"], out targetId))
+            return;
 
         Task.Run(async () =>
         {
             await Task.Delay(6700);
 
-            vvar targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == targetId);
+            var targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == targetId);
             if (targetObj == null) return;
 
             Vector3 targetPos = targetObj.Position;
