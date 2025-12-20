@@ -191,7 +191,7 @@ public class M9N
                 var dp = accessory.Data.GetDefaultDrawProperties();
 
                 dp.Name = "以太流失";
-                dp.Position = new Vector3(position.X,0f, position.Z); 
+                dp.Position = position; 
                 dp.Scale = scale;
                 dp.Rotation = rot;
                 dp.Color = color;
