@@ -180,11 +180,11 @@ public class M9N
         if (playerObj == null) return;
 
         Vector3 fixedPosition = playerObj.Position;
-        float Rotation = playerObj.Rotation;
+        float rotation = playerObj.Rotation;
         uint ownerId = tid;
 
         // 绘制固定十字AOE，持续7秒
-        DrawAOELines(accessory, ownerId, fixedPosition, Rotation, temporary: true, duration: 7000);
+        DrawAOELines(accessory, ownerId, fixedPosition, rotation, temporary: true, duration: 7000);
 
     }
 
