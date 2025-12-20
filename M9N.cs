@@ -1,13 +1,26 @@
 using System;
-using System.Linq;
-using System.Numerics;
-using Newtonsoft.Json;
-using Dalamud.Utility.Numerics;
-using KodakkuAssist.Script;
 using KodakkuAssist.Module.GameEvent;
+using KodakkuAssist.Script;
+using KodakkuAssist.Module.GameEvent.Struct;
 using KodakkuAssist.Module.Draw;
+using KodakkuAssist.Data;
+using KodakkuAssist.Module.Draw.Manager;
+using KodakkuAssist.Module.GameOperate;
+using KodakkuAssist.Module.GameEvent.Types;
+using KodakkuAssist.Extensions;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Numerics;
+using Newtonsoft.Json;
+using System.Linq;
+using System.ComponentModel;
+using Dalamud.Utility.Numerics;
+using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using FFXIVClientStructs.FFXIV.Client.Game.Object;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Vfx;
+using Lumina.Excel.Sheets;
+
 
 namespace BakaWater77.M9N;
 
@@ -47,7 +60,7 @@ public class M9N
         }
     }
 
-    #region 月之半相（左半场刀）
+   
     [ScriptMethod(
         name: "月之半相左",
         eventType: EventTypeEnum.StartCasting,
@@ -68,14 +81,14 @@ public class M9N
         dp.Owner = sid;
         dp.Scale = new Vector2(40, 40);
         dp.ScaleMode = ScaleMode.ByTime;
-        dp.Rotation = sourceObj.Rotation + MathF.PI / 2;
+        dp.Rotation = sourceObj.Rotation - MathF.PI / 2;
         dp.Color = accessory.Data.DefaultDangerColor;
         dp.DestoryAt = 4000;
         accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp);
     }
-    #endregion
 
-    #region 月之半相（右半场刀）
+
+  
     [ScriptMethod(
         name: "月之半相右",
         eventType: EventTypeEnum.StartCasting,
@@ -96,7 +109,7 @@ public class M9N
         dp.Owner = sid;
         dp.Scale = new Vector2(40, 40);
         dp.ScaleMode = ScaleMode.ByTime;
-        dp.Rotation = sourceObj.Rotation - MathF.PI / 2;
+        dp.Rotation = sourceObj.Rotation + MathF.PI / 2;
         dp.Color = accessory.Data.DefaultDangerColor;
         dp.DestoryAt = 4000;
         accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp);
@@ -125,14 +138,13 @@ public class M9N
         dp.Scale = new Vector2(40, 40);
         dp.ScaleMode = ScaleMode.ByTime;
         dp.Rotation = sourceObj.Rotation + MathF.PI / 2;
-        dp.Offset = @event.SourcePosition.WithX(4);
+        dp.Offset = sourceObj.Position + new Vector3(4, 0, 0);
         dp.Color = accessory.Data.DefaultDangerColor;
         dp.DestoryAt = 4000;
         accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp);
     }
-    #endregion
+    
 
-    #region 月之半相（大右半场刀）
     [ScriptMethod(
         name: "大右半场刀",
         eventType: EventTypeEnum.StartCasting,
@@ -145,6 +157,7 @@ public class M9N
             accessory.Method.TextInfo("先去 左 目标圈外 稍后对穿", duration: 4700, true);
 
         if (!ParseObjectId(@event["SourceId"], out var sid)) return;
+
         var sourceObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == sid);
         if (sourceObj == null) return;
 
@@ -154,73 +167,54 @@ public class M9N
         dp.Scale = new Vector2(40, 40);
         dp.ScaleMode = ScaleMode.ByTime;
         dp.Rotation = sourceObj.Rotation - MathF.PI / 2;
-        dp.Offset = @event.SourcePosition.WithX(-4);// new Vector3(-4, 0, 0)
+        dp.Offset = sourceObj.Position + new Vector3(-4, 0, 0);// new Vector3(-4, 0, 0)
         dp.Color = accessory.Data.DefaultDangerColor;
         dp.DestoryAt = 4000;
         accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp);
     }
-    #endregion
 
-    #region 以太流失
     [ScriptMethod(
-        name: "以太流失",
-        eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(45896)$" }
-    )]
-    public void 以太流失(Event @event, ScriptAccessory accessory)
+    name: "以太流失",
+    eventType: EventTypeEnum.ActionEffect, // 技能判定生效事件
+    eventCondition: new[] { "ActionId:regex:^(45896)$" } // 判定技能ID
+)]
+    public void AOElineAfter(Event @event, ScriptAccessory accessory)
     {
         if (!ParseObjectId(@event["TargetId"], out var tid)) return;
-
         var playerObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
         if (playerObj == null) return;
 
         float rotation = playerObj.Rotation;
+        uint ownerId = tid;
 
-        // 前
-        var dp1 = accessory.Data.GetDefaultDrawProperties();
-        dp1.Name = "以太流失";
-        dp1.Owner = tid;
-        dp1.Scale = new Vector2(6, 40);
-        dp1.ScaleMode = ScaleMode.ByTime;
-        dp1.Rotation = rotation;
-        dp1.Color = accessory.Data.DefaultDangerColor;
-        dp1.DestoryAt = 12000;
-        accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp1);
-
-        // 后
-        var dp3 = accessory.Data.GetDefaultDrawProperties();
-        dp3.Name = "以太流失";
-        dp3.Owner = tid;
-        dp3.Scale = new Vector2(6, 40);
-        dp3.ScaleMode = ScaleMode.ByTime;
-        dp3.Rotation = rotation + MathF.PI;
-        dp3.Color = accessory.Data.DefaultDangerColor;
-        dp3.DestoryAt = 12000;
-        accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp3);
-
-        // 左
-        var dp2 = accessory.Data.GetDefaultDrawProperties();
-        dp2.Name = "以太流失";
-        dp2.Owner = tid;
-        dp2.Scale = new Vector2(6, 40);
-        dp2.Rotation = rotation + MathF.PI / 2;
-        dp2.Color = accessory.Data.DefaultDangerColor;
-        dp2.DestoryAt = 12000;
-        accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp2);
-
-        // 右
-        var dp4 = accessory.Data.GetDefaultDrawProperties();
-        dp4.Name = "以太流失";
-        dp4.Owner = tid;
-        dp4.Scale = new Vector2(6, 40);
-        dp4.Rotation = rotation - MathF.PI / 2;
-        dp4.Color = accessory.Data.DefaultDangerColor;
-        dp4.DestoryAt = 12000;
-        accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp4);
+        // 绘制固定十字AOE，持续7秒
+        DrawAOELines(accessory, ownerId, rotation, temporary: true, duration: 7000);
     }
-    #endregion
 
-    #region 其他技能示例
+    // 封装函数：绘制四条直线AOE
+    private void DrawAOELines(ScriptAccessory accessory, uint ownerId, float rotation, bool temporary, int duration = 0)
+    {
+        int destroyTime = temporary ? duration : 0; // 0表示不自动消失
+        Vector2 scale = new Vector2(6, 40);
+        var color = accessory.Data.DefaultDangerColor;
+
+        // 四个方向的直线
+        float[] rotations = { rotation, rotation + MathF.PI, rotation + MathF.PI / 2, rotation - MathF.PI / 2 };
+
+        foreach (var rot in rotations)
+        {
+            var dp = accessory.Data.GetDefaultDrawProperties();
+            dp.Name = "以太流失";
+            dp.Owner = ownerId;
+            dp.Scale = scale;
+            dp.Rotation = rot;
+            dp.Color = color;
+            dp.DestoryAt = destroyTime;
+            accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp);
+        }
+    }
+
+
     [ScriptMethod(
         name: "施虐的尖啸",
         eventType: EventTypeEnum.StartCasting,
@@ -242,10 +236,9 @@ public class M9N
         var dp = accessory.Data.GetDefaultDrawProperties();
         dp.Name = "共振波";
         dp.Color = new Vector4(1f, 1f, 0f, 0.5f);
-        dp.ScaleMode = ScaleMode.ByTime;
         dp.Position = @event.SourcePosition();
         dp.Scale = new Vector2(8);
-        dp.DestoryAt = 3000;
+        dp.DestoryAt = 2000;
         accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
     }
 
@@ -284,5 +277,18 @@ public class M9N
         if (isText)
             accessory.Method.TextInfo("AOE", duration: 4700, true);
     }
-    #endregion
+
+    [ScriptMethod(
+       name: "贪欲无厌",
+       eventType: EventTypeEnum.StartCasting,
+       eventCondition: new[] { "ActionId:regex:^(45892)$" },
+       userControl: true
+   )]
+    public void 贪欲无厌(Event @event, ScriptAccessory accessory)
+    {
+        if (isText)
+            accessory.Method.TextInfo("AOE", duration: 4700, true);
+    }
+
+
 }
