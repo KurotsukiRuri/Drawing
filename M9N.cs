@@ -173,9 +173,8 @@ public class M9N
 
             
             float rotation = @event.SourceRotation(); 
-            uint targetId = 0;
-        if (!ParseObjectId(@event["TargetId"], out var targetId))
-            return;
+            uint targetId;
+        if (!ParseObjectId(@event["TargetId"], out targetId)) return;
 
         Task.Run(async () =>
         {
