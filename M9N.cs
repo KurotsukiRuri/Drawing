@@ -125,7 +125,7 @@ public class M9N
         dp.Scale = new Vector2(40, 40);
         dp.ScaleMode = ScaleMode.ByTime;
         dp.Rotation = sourceObj.Rotation + MathF.PI / 2;
-        dp.Offset = new Vector3(4, 0, 0);
+        dp.Offset = @event.SourcePosition.WithX(4);
         dp.Color = accessory.Data.DefaultDangerColor;
         dp.DestoryAt = 4000;
         accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp);
@@ -154,7 +154,7 @@ public class M9N
         dp.Scale = new Vector2(40, 40);
         dp.ScaleMode = ScaleMode.ByTime;
         dp.Rotation = sourceObj.Rotation - MathF.PI / 2;
-        dp.Offset = new Vector3(-4, 0, 0);
+        dp.Offset = @event.SourcePosition.WithX(-4);// new Vector3(-4, 0, 0)
         dp.Color = accessory.Data.DefaultDangerColor;
         dp.DestoryAt = 4000;
         accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp);
