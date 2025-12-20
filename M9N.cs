@@ -30,7 +30,7 @@ namespace BakaWater77.M9N;
     name: "M9N",
     territorys: new uint[] { 1320 },
     guid: "9af9ac60-1d6e-4247-a144-c6273417fea9",
-    version: "0.0.0.6",
+    version: "0.0.0.5",
     author: "Baka-Water77",
     note: null
 )]
@@ -179,7 +179,7 @@ public class M9N
 
         if (targetObj == null) return;
 
-        Vector3 center = targetObj.Position;
+        Vector3 center = @event.EffectPosition();
         float rotation = @event.SourceRotation();
 
         DrawCrossAOE(accessory, center, rotation, 5000);
