@@ -35,7 +35,7 @@ public static class EventExtensions
     name: "M9N",
     territorys: new uint[] { 1320 },
     guid: "9af9ac60-1d6e-4247-a144-c6273417fea9",
-    version: "0.0.0.3",
+    version: "0.0.0.4",
     author: "Baka-Water77",
     note: null
 )]
@@ -175,8 +175,8 @@ public class M9N
     )]
     public void AOElineAfter(Event @event, ScriptAccessory accessory)
     {
-        Vector3 center = @event.SourcePosition();
-        float baseRotation = @event.SourceRotation();
+        Vector3 center = @event.SourcePosition;
+        float baseRotation = @event.SourceRotation;
 
         // 绘制固定十字AOE，持续7秒
         DrawAOELines(accessory, center, baseRotation, duration: 7000);
