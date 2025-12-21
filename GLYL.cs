@@ -55,7 +55,7 @@ public class 极格莱杨拉
         [ScriptMethod(
             name: "以太炮",//分散  
             eventType: EventTypeEnum.StatusAdd,
-            eventCondition: new[] { "StatusId:regex:^(4176)$" },
+            eventCondition: new[] { "StatusId:regex:^(2552)$" },
             userControl: true
         )]
         public void 以太炮(Event @event, ScriptAccessory accessory)
