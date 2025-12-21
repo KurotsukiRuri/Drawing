@@ -21,7 +21,7 @@
     },
     {
         "Name": "极格莱杨拉",
-        "Guid": "9af9ac60-1d6e-4247-a144-c6273417fea9",
+        "Guid": "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
         "Version": "0.0.0.1",
         "Author": "Baka-Water77",
         "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/GLYL",
@@ -30,6 +30,7 @@
         "UpdateInfo": "v0.0.0.1:\n    尝试绘制P2分摊分散范围提示"
     }
 ]
+
 
 
 
