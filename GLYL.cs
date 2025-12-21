@@ -66,8 +66,7 @@ public class 极格莱杨拉
 
         foreach (var p in accessory.Data.PartyList)
         {
-            var obj = accessory.Data.Objects
-            .FirstOrDefault(o => o.GameObjectId == pid);
+            var obj = accessory.Data.Objects.FirstOrDefault(o => o.GameObjectId == pid);
             if (obj == null)
                 continue;
 
@@ -82,6 +81,7 @@ public class 极格莱杨拉
             dp.DestoryAt = 4000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
         }
+    }
 
         [ScriptMethod(
                 name: "以太冲击波",//分摊
@@ -97,8 +97,7 @@ public class 极格莱杨拉
 
             foreach (var p in accessory.Data.PartyList)
             {
-                var obj = accessory.Data.Objects
-            .FirstOrDefault(o => o.GameObjectId == pid);
+                var obj = accessory.Data.Objects.FirstOrDefault(o => o.GameObjectId == pid);
 
                 if (obj == null)
                     continue;
@@ -137,4 +136,4 @@ public class 极格莱杨拉
         {
             return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
         }
-    }
+    } }
