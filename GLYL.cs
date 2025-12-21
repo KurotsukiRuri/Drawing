@@ -111,7 +111,6 @@ public class 极格莱杨拉
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
-    }
 
 public static class EventExtensions
 {
