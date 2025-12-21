@@ -75,7 +75,6 @@ public class 极格莱杨拉
             var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "以太炮";
             dp.Owner = pid;
-            dp.Position = targetObj.Position;
             dp.Scale = new Vector2(6);
             dp.Color = accessory.Data.DefaultDangerColor;
             dp.DestoryAt = 4000;
@@ -88,6 +87,7 @@ public class 极格莱杨拉
                 eventCondition: ["Id:027D"],
                 userControl: true
             )]
+
         public void 以太冲击波(Event @event, ScriptAccessory accessory)
         {
             if (isText)
@@ -111,6 +111,7 @@ public class 极格莱杨拉
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
+    }
         
 
 public static class EventExtensions
