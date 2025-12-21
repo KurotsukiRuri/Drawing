@@ -24,7 +24,7 @@ namespace BakaWater77.极格莱杨拉;
 
 
 [ScriptType(
-   name: "极格莱杨拉",
+   name: "极格莱杨拉P2异世界",
    territorys: new uint[] { 1308 },
    guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
    version: "0.0.0.1",
