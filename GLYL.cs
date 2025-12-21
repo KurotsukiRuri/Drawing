@@ -60,7 +60,7 @@ public class 极格莱杨拉
             dp.Owner = p;
             dp.Scale = new Vector2(6);
             dp.Color = accessory.Data.DefaultDangerColor;
-            dp.DestoryAt = 4000;
+            dp.DestoryAt = 6000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
         }
     }
@@ -95,7 +95,7 @@ public class 极格莱杨拉
             dp.Owner = memberObj;
             dp.Scale = new Vector2(6);
             dp.Color = sa.Data.DefaultSafeColor;
-            dp.DestoryAt = 4000;
+            dp.DestoryAt = 6000;
             sa.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
         }
     }
