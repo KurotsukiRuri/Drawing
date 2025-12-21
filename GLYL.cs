@@ -53,27 +53,20 @@ public class 极格莱杨拉
 
 
     [ScriptMethod(
-        name: "以太炮",//分散  
-        eventType: EventTypeEnum.TargetIcon,
-        eventCondition: ["Id:027E"],
-        userControl: true
-    )]
+    name: "以太炮",
+    eventType: EventTypeEnum.TargetIcon,
+    eventCondition: ["Id:027E"],
+    userControl: true
+)]
     public void 以太炮(Event @event, ScriptAccessory accessory)
     {
         if (isText)
             accessory.Method.TextInfo("分散", duration: 4700, true);
 
+        if (!ParseObjectId(@event["TargetId"], out var pid))
+            return;
 
-        foreach (var p in accessory.Data.PartyList)
-        {
-            var obj = accessory.Data.Objects.FirstOrDefault(o => o.GameObjectId == pid);
-            if (obj == null)
-                continue;
-
-            if (p.IsTank())
-                continue;
-
-            var dp = accessory.Data.GetDefaultDrawProperties();
+        var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "以太炮";
             dp.Owner = pid;
             dp.Scale = new Vector2(6);
@@ -83,30 +76,22 @@ public class 极格莱杨拉
         }
     }
 
-        [ScriptMethod(
-                name: "以太冲击波",//分摊
-                eventType: EventTypeEnum.TargetIcon,
-                eventCondition: ["Id:027D"],
-                userControl: true
-            )]
+    [ScriptMethod(
+    name: "以太冲击波",
+    eventType: EventTypeEnum.TargetIcon,
+    eventCondition: ["Id:027D"],
+    userControl: true
+)]
+    public void 以太冲击波(Event @event, ScriptAccessory accessory)
+    {
+        if (isText)
+            accessory.Method.TextInfo("分摊", duration: 4700, true);
 
-        public void 以太冲击波(Event @event, ScriptAccessory accessory)
-        {
-            if (isText)
-                accessory.Method.TextInfo("分摊", duration: 4700, true);
-
-            foreach (var p in accessory.Data.PartyList)
-            {
-                var obj = accessory.Data.Objects.FirstOrDefault(o => o.GameObjectId == pid);
-
-                if (obj == null)
-                    continue;
-
-                if (p.IsTank())
-                    continue;
+        if (!ParseObjectId(@event["TargetId"], out var pid))
+            return;
 
 
-                var dp = accessory.Data.GetDefaultDrawProperties();
+        var dp = accessory.Data.GetDefaultDrawProperties();
                 dp.Name = "以太冲击波";
                 dp.Owner = pid;
                 dp.Scale = new Vector2(6);
