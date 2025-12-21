@@ -1,3 +1,23 @@
+using System;
+using KodakkuAssist.Module.GameEvent;
+using KodakkuAssist.Script;
+using KodakkuAssist.Module.GameEvent.Struct;
+using KodakkuAssist.Module.Draw;
+using KodakkuAssist.Data;
+using KodakkuAssist.Module.Draw.Manager;
+using KodakkuAssist.Module.GameOperate;
+using KodakkuAssist.Module.GameEvent.Types;
+using KodakkuAssist.Extensions;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Numerics;
+using Newtonsoft.Json;
+using System.Linq;
+using System.ComponentModel;
+using Dalamud.Utility.Numerics;
+
+
 namespace BakaWater77.极格莱杨拉
 {
     [ScriptType(
@@ -77,23 +97,26 @@ namespace BakaWater77.极格莱杨拉
             dp.DestoryAt = 4000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
         }
-    }
+    } // <- 极格莱杨拉 类闭合
 
-    
+    // EventExtensions 必须放在 类外
     public static class EventExtensions
     {
         public static Vector3 SourcePosition(this Event @event)
         {
             return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
         }
+
         public static float SourceRotation(this Event @event)
         {
             return float.Parse(@event["SourceRotation"]);
         }
+
         public static uint SourceDataId(this Event @event)
         {
             return uint.Parse(@event["SourceDataId"]);
         }
+
         public static Vector3 EffectPosition(this Event @event)
         {
             return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
