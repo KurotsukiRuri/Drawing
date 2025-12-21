@@ -111,23 +111,25 @@ public class 极格莱杨拉
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
+    }
 
 public static class EventExtensions
-{
-    public static Vector3 SourcePosition(this Event @event)
     {
-        return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
-    }
-    public static float SourceRotation(this Event @event)
-    {
-        return float.Parse(@event["SourceRotation"]);
-    }
-    public static uint SourceDataId(this Event @event)
-    {
-        return uint.Parse(@event["SourceDataId"]);
-    }
-    public static Vector3 EffectPosition(this Event @event)
-    {
-        return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
+        public static Vector3 SourcePosition(this Event @event)
+        {
+            return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
+        }
+        public static float SourceRotation(this Event @event)
+        {
+            return float.Parse(@event["SourceRotation"]);
+        }
+        public static uint SourceDataId(this Event @event)
+        {
+            return uint.Parse(@event["SourceDataId"]);
+        }
+        public static Vector3 EffectPosition(this Event @event)
+        {
+            return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
+        }
     }
 }
