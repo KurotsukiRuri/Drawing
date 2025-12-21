@@ -18,38 +18,42 @@ using System.ComponentModel;
 using Dalamud.Utility.Numerics;
 
 
-namespace BakaWater77.极格莱杨拉
+namespace BakaWater77.极格莱杨拉;
+
+
+
+[ScriptType(
+   name: "极格莱杨拉",
+   territorys: new uint[] { 1308 },
+   guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
+   version: "0.0.0.1",
+   author: "Baka-Water77",
+   note: null
+)]
+public class 极格莱杨拉
 {
-    [ScriptType(
-       name: "极格莱杨拉",
-       territorys: new uint[] { 1308 },
-       guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-       version: "0.0.0.1",
-       author: "Baka-Water77",
-       note: null
-    )]
-    public class 极格莱杨拉
+    public bool isText { get; set; } = true;
+
+    private static bool ParseObjectId(string? idStr, out uint id)
     {
-        public bool isText { get; set; } = true;
+        id = 0;
+        if (string.IsNullOrEmpty(idStr)) return false;
 
-        private static bool ParseObjectId(string? idStr, out uint id)
+        try
         {
-            id = 0;
-            if (string.IsNullOrEmpty(idStr)) return false;
-
-            try
-            {
-                id = uint.Parse(idStr.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            id = uint.Parse(idStr.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+            return true;
         }
+        catch
+        {
+            return false;
+        }
+    }
+    
+
 
         [ScriptMethod(
-            name: "以太炮",
+            name: "以太炮",//分散  
             eventType: EventTypeEnum.ActionEffect,
             eventCondition: new[] { "ActionId:regex:^(45697)$" },
             userControl: true
@@ -63,6 +67,9 @@ namespace BakaWater77.极格莱杨拉
             var targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
             if (targetObj == null) return;
 
+            var targetPos = targetObj.Position;
+
+
             var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "以太炮";
             dp.Owner = tid;
@@ -74,11 +81,11 @@ namespace BakaWater77.极格莱杨拉
         }
 
         [ScriptMethod(
-            name: "以太冲击波",
-            eventType: EventTypeEnum.ActionEffect,
-            eventCondition: new[] { "ActionId:regex:^(45698)$" },
-            userControl: true
-        )]
+                name: "以太冲击波",//分摊
+                eventType: EventTypeEnum.ActionEffect,
+                eventCondition: new[] { "ActionId:regex:^(45698)$" },
+                userControl: true
+            )]
         public void 以太冲击波(Event @event, ScriptAccessory accessory)
         {
             if (isText)
@@ -88,6 +95,9 @@ namespace BakaWater77.极格莱杨拉
             var targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
             if (targetObj == null) return;
 
+            var targetPos = targetObj.Position;
+
+
             var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "以太冲击波";
             dp.Owner = tid;
@@ -96,30 +106,25 @@ namespace BakaWater77.极格莱杨拉
             dp.Color = accessory.Data.DefaultSafeColor;
             dp.DestoryAt = 4000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-        }
-    } // <- 极格莱杨拉 类闭合
+        } 
+    }
 
-    // EventExtensions 必须放在 类外
-    public static class EventExtensions
+public static class EventExtensions
+{
+    public static Vector3 SourcePosition(this Event @event)
     {
-        public static Vector3 SourcePosition(this Event @event)
-        {
-            return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
-        }
-
-        public static float SourceRotation(this Event @event)
-        {
-            return float.Parse(@event["SourceRotation"]);
-        }
-
-        public static uint SourceDataId(this Event @event)
-        {
-            return uint.Parse(@event["SourceDataId"]);
-        }
-
-        public static Vector3 EffectPosition(this Event @event)
-        {
-            return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
-        }
+        return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
+    }
+    public static float SourceRotation(this Event @event)
+    {
+        return float.Parse(@event["SourceRotation"]);
+    }
+    public static uint SourceDataId(this Event @event)
+    {
+        return uint.Parse(@event["SourceDataId"]);
+    }
+    public static Vector3 EffectPosition(this Event @event)
+    {
+        return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
     }
 }
