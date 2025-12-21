@@ -66,10 +66,12 @@ public class 极格莱杨拉
 
         foreach (var p in accessory.Data.PartyList)
         {
+            var obj = accessory.Data.Objects
+            .FirstOrDefault(o => o.GameObjectId == pid);
+            if (obj == null)
+                continue;
 
             if (p.IsTank())
-                continue;
-            if (!ParseObjectId(p.ObjectId, out var pid))
                 continue;
 
             var dp = accessory.Data.GetDefaultDrawProperties();
@@ -95,10 +97,13 @@ public class 极格莱杨拉
 
             foreach (var p in accessory.Data.PartyList)
             {
+                var obj = accessory.Data.Objects
+            .FirstOrDefault(o => o.GameObjectId == pid);
+
+                if (obj == null)
+                    continue;
 
                 if (p.IsTank())
-                    continue;
-                if (!ParseObjectId(p.ObjectId, out var pid))
                     continue;
 
 
@@ -112,9 +117,9 @@ public class 极格莱杨拉
             }
         }
     }
-        
 
-public static class EventExtensions
+
+    public static class EventExtensions
     {
         public static Vector3 SourcePosition(this Event @event)
         {
@@ -133,4 +138,3 @@ public static class EventExtensions
             return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
         }
     }
-}
