@@ -19,15 +19,17 @@
         "Note": "这个是测试学习用你无需下载此脚本（其实是对着cyf的文档抄了一下）（）",
         "UpdateInfo": "v0.0.0.1:\n    这个是测试学习用你无需下载此脚本（其实是对着cyf的文档抄了一下）（）"
     },
-    "Name": "极格莱杨拉",
+    {"Name": "极格莱杨拉",
         "Guid": "9af9ac60-1d6e-4247-a144-c6273417fea9",
         "Version": "0.0.0.1",
         "Author": "Baka-Water77",
         "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/M9N.cs",
         "TerritoryIds": [1308],
         "Note": "无",
-        "UpdateInfo": "v0.0.0.1:\n    尝试绘制P2分摊分散范围提示
+        "UpdateInfo": "v0.0.0.1:\n    尝试绘制P2分摊分散范围提示"
+    }
 ]
+
 
 
 
