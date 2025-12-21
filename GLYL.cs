@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.ComponentModel;
 using Dalamud.Utility.Numerics;
+using Dalamud.Plugin.Services;
 
 
 namespace BakaWater77.极格莱杨拉;
@@ -34,31 +35,7 @@ public class 极格莱杨拉
 {
     public bool isText { get; set; } = true;
 
-    private static bool ParseObjectId(string? idStr, out uint id)
-    {
-        id = 0;
-        if (string.IsNullOrEmpty(idStr)) return false;
-
-        try
-        {
-            id = uint.Parse(idStr.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-    private IBattleChara? GetCharaById(uint id, ScriptAccessory accessory)
-    {
-        return accessory.Data.Objects
-            .OfType<IBattleChara>()
-            .FirstOrDefault(x => x.GameObjectId == id);
-    }
-
-
-
-
+    
     [ScriptMethod(
     name: "以太炮",
     eventType: EventTypeEnum.TargetIcon,
@@ -67,29 +44,27 @@ public class 极格莱杨拉
 )]
     public void 以太炮(Event @event, ScriptAccessory accessory)
     {
-        if (!ParseObjectId(@event["TargetId"], out var pid))
-            return;
-
-        var chara = GetCharaById(pid, accessory);
-        if (chara == null)
-            return;
-
-        if (chara.IsTank())
-            return;
-
         if (isText)
-            accessory.Method.TextInfo("分散", duration: 4700, true);
+            accessory.Method.TextInfo("分散", duration: 4700);
+
+       
+        for (int i = 0; i < accessory.Data.PartyList.Count; i++)
+        {
+            if (i == 0 || i == 1) continue; 
+
+            var p = accessory.Data.PartyList[i];
 
 
-        var dp = accessory.Data.GetDefaultDrawProperties();
+            var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "以太炮";
-            dp.Owner = pid;
+            dp.Owner = p;
             dp.Scale = new Vector2(6);
             dp.Color = accessory.Data.DefaultDangerColor;
             dp.DestoryAt = 4000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
         }
-    
+    }
+
 
     [ScriptMethod(
     name: "以太冲击波",
@@ -97,54 +72,35 @@ public class 极格莱杨拉
     eventCondition: ["Id:027D"],
     userControl: true
 )]
-    public void 以太冲击波(Event @event, ScriptAccessory accessory)
+    public void DrawH1H2Circle(Event ev, ScriptAccessory sa)
     {
-        if (!ParseObjectId(@event["TargetId"], out var pid))
-            return;
-
-        var chara = GetCharaById(pid, accessory);
-        if (chara == null)
-            return;
-
-        if (!chara.IsHealer())
-            return;
-
-     
-        if (chara.PartyIndex != 2 && chara.PartyIndex != 3)
-            return;
+        if (sa.Data.PartyList.Count < 2) return; 
 
         if (isText)
-            accessory.Method.TextInfo("分摊", duration: 4700, true);
+            sa.Method.TextInfo("分摊", duration: 4700);
+
+      
+        var H1H2 = new[]
+        {
+        (Index: 0, Name: "H1"),
+        (Index: 1, Name: "H2")
+    };
+
+        foreach (var (index, name) in H1H2)
+        {
+            var memberObj = sa.Data.PartyList[index]; 
+            if (memberObj == 0) continue;
+            var dp = sa.Data.GetDefaultDrawProperties();
+            dp.Name = "以太冲击波";
+            dp.Owner = memberObj;
+            dp.Scale = new Vector2(6);
+            dp.Color = sa.Data.DefaultSafeColor;
+            dp.DestoryAt = 4000;
+            sa.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+        }
+    }
+}
 
 
-        var dp = accessory.Data.GetDefaultDrawProperties();
-                dp.Name = "以太冲击波";
-                dp.Owner = pid;
-                dp.Scale = new Vector2(6);
-                dp.Color = accessory.Data.DefaultSafeColor;
-                dp.DestoryAt = 4000;
-                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-            }
-        }
-    
 
 
-    public static class EventExtensions
-    {
-        public static Vector3 SourcePosition(this Event @event)
-        {
-            return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
-        }
-        public static float SourceRotation(this Event @event)
-        {
-            return float.Parse(@event["SourceRotation"]);
-        }
-        public static uint SourceDataId(this Event @event)
-        {
-            return uint.Parse(@event["SourceDataId"]);
-        }
-        public static Vector3 EffectPosition(this Event @event)
-        {
-            return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
-        }
-} 
