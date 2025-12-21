@@ -26,10 +26,11 @@
         "Author": "Baka-Water77",
         "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/GLYL.cs",
         "TerritoryIds": [1308],
-        "Note": "还在测试阶段，别下",
+        "Note": "仅绘制了P2小世界的分摊分散范围，由于不知道点哪几个人于是干脆把除了T以外的所有人都画出来了",
         "UpdateInfo": "v0.0.0.1:\n    尝试绘制P2分摊分散范围提示"
     }
 ]
+
 
 
 
