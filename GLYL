@@ -48,6 +48,7 @@ public class 极格莱杨拉
         {
             return false;
         }
+    }
 
 
         [ScriptMethod(
@@ -84,7 +85,7 @@ public class 极格莱杨拉
                 eventCondition: new[] { "ActionId:regex:^(45698)$" },
                 userControl: true
             )]
-        public void (Event @event, ScriptAccessory accessory)
+        public void 以太冲击波(Event @event, ScriptAccessory accessory)
         {
             if (isText)
                 accessory.Method.TextInfo("分摊", duration: 4700, true);
