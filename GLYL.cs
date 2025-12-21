@@ -49,6 +49,13 @@ public class 极格莱杨拉
             return false;
         }
     }
+    private IBattleChara? GetCharaById(uint id, ScriptAccessory accessory)
+    {
+        return accessory.Data.Objects
+            .OfType<IBattleChara>()
+            .FirstOrDefault(x => x.GameObjectId == id);
+    }
+
 
 
 
@@ -60,11 +67,19 @@ public class 极格莱杨拉
 )]
     public void 以太炮(Event @event, ScriptAccessory accessory)
     {
+        if (!ParseObjectId(@event["TargetId"], out var pid))
+            return;
+
+        var chara = GetCharaById(pid, accessory);
+        if (chara == null)
+            return;
+
+        if (chara.IsTank())
+            return;
+
         if (isText)
             accessory.Method.TextInfo("分散", duration: 4700, true);
 
-        if (!ParseObjectId(@event["TargetId"], out var pid))
-            return;
 
         var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "以太炮";
@@ -84,11 +99,22 @@ public class 极格莱杨拉
 )]
     public void 以太冲击波(Event @event, ScriptAccessory accessory)
     {
-        if (isText)
-            accessory.Method.TextInfo("分摊", duration: 4700, true);
-
         if (!ParseObjectId(@event["TargetId"], out var pid))
             return;
+
+        var chara = GetCharaById(pid, accessory);
+        if (chara == null)
+            return;
+
+        if (!chara.IsHealer())
+            return;
+
+     
+        if (chara.PartyIndex != 2 && chara.PartyIndex != 3)
+            return;
+
+        if (isText)
+            accessory.Method.TextInfo("分摊", duration: 4700, true);
 
 
         var dp = accessory.Data.GetDefaultDrawProperties();
@@ -121,4 +147,4 @@ public class 极格莱杨拉
         {
             return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
         }
-    } 
+} 
