@@ -82,8 +82,8 @@ public class 极格莱杨拉
       
         var H1H2 = new[]
         {
-        (Index: 0, Name: "H1"),
-        (Index: 1, Name: "H2")
+        (Index: 2, Name: "H1"),
+        (Index: 3, Name: "H2")
     };
 
         foreach (var (index, name) in H1H2)
