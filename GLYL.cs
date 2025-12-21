@@ -126,4 +126,3 @@ public class 极格莱杨拉
             return JsonConvert.DeserializeObject<Vector3>(@event["EffectPosition"]);
         }
     }
-}
