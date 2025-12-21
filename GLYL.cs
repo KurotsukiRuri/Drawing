@@ -49,30 +49,32 @@ public class 极格莱杨拉
             return false;
         }
     }
-    
 
 
-        [ScriptMethod(
-            name: "以太炮",//分散  
-            eventType: EventTypeEnum.TargetIcon,
-            eventCondition: ["Id:027E"],
-            userControl: true
-        )]
-        public void 以太炮(Event @event, ScriptAccessory accessory)
+
+    [ScriptMethod(
+        name: "以太炮",//分散  
+        eventType: EventTypeEnum.TargetIcon,
+        eventCondition: ["Id:027E"],
+        userControl: true
+    )]
+    public void 以太炮(Event @event, ScriptAccessory accessory)
+    {
+        if (isText)
+            accessory.Method.TextInfo("分散", duration: 4700, true);
+
+
+        foreach (var p in accessory.Data.PartyList)
         {
-            if (isText)
-                accessory.Method.TextInfo("分散", duration: 4700, true);
 
-            if (!ParseObjectId(@event["TargetId"], out var tid)) return;
-            var targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
-            if (targetObj == null) return;
-
-            var targetPos = targetObj.Position;
-
+            if (p.IsTank())
+                continue;
+            if (!ParseObjectId(p.ObjectId, out var pid))
+                continue;
 
             var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "以太炮";
-            dp.Owner = tid;
+            dp.Owner = pid;
             dp.Position = targetObj.Position;
             dp.Scale = new Vector2(6);
             dp.Color = accessory.Data.DefaultDangerColor;
@@ -91,22 +93,24 @@ public class 极格莱杨拉
             if (isText)
                 accessory.Method.TextInfo("分摊", duration: 4700, true);
 
-            if (!ParseObjectId(@event["TargetId"], out var tid)) return;
-            var targetObj = accessory.Data.Objects.FirstOrDefault(x => x.GameObjectId == tid);
-            if (targetObj == null) return;
+            foreach (var p in accessory.Data.PartyList)
+            {
 
-            var targetPos = targetObj.Position;
+                if (p.IsTank())
+                    continue;
+                if (!ParseObjectId(p.ObjectId, out var pid))
+                    continue;
 
 
-            var dp = accessory.Data.GetDefaultDrawProperties();
-            dp.Name = "以太冲击波";
-            dp.Owner = tid;
-            dp.Position = targetObj.Position;
-            dp.Scale = new Vector2(6);
-            dp.Color = accessory.Data.DefaultSafeColor;
-            dp.DestoryAt = 4000;
-            accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-        } 
+                var dp = accessory.Data.GetDefaultDrawProperties();
+                dp.Name = "以太冲击波";
+                dp.Owner = pid;
+                dp.Scale = new Vector2(6);
+                dp.Color = accessory.Data.DefaultSafeColor;
+                dp.DestoryAt = 4000;
+                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+            }
+        }
     }
 
 public static class EventExtensions
