@@ -54,8 +54,8 @@ public class 极格莱杨拉
 
         [ScriptMethod(
             name: "以太炮",//分散  
-            eventType: EventTypeEnum.StatusAdd,
-            eventCondition: new[] { "StatusId:regex:^(2552)$" },
+            eventType: EventTypeEnum.TargetIcon,
+            eventCondition: ["Id:027E"],
             userControl: true
         )]
         public void 以太炮(Event @event, ScriptAccessory accessory)
@@ -82,8 +82,8 @@ public class 极格莱杨拉
 
         [ScriptMethod(
                 name: "以太冲击波",//分摊
-                eventType: EventTypeEnum.StatusAdd,
-                eventCondition: new[] { "StatusId:regex:^(4541)$" },
+                eventType: EventTypeEnum.TargetIcon,
+                eventCondition: ["Id:027D"],
                 userControl: true
             )]
         public void 以太冲击波(Event @event, ScriptAccessory accessory)
