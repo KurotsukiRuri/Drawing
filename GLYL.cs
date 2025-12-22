@@ -76,7 +76,7 @@
                     lastTargetIdForScatter = TargetId;
 
                
-            ClearLastTargetIds();
+            
             return;
             }
 
