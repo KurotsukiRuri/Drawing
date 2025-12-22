@@ -49,15 +49,43 @@ public class 极格莱杨拉
             return false;
         }
     }
+    private static DateTime 读条时间;
+    [ScriptMethod(
+    name: "超增压抽雾",//吸引
+    eventType: EventTypeEnum.StartCasting,
+    eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
+    userControl: true
+)]
+    public void 超增压抽雾(Event @event, ScriptAccessory accessory)
+    {
+        读条时间 = DateTime.Now;
+        if (isText)
+            accessory.Method.TextInfo("吸引", duration: 4700);
+    }
+
+    [ScriptMethod(
+name: "超增压急行",//击退
+eventType: EventTypeEnum.StartCasting,
+eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
+userControl: true
+)]
+    public void 超增压急行(Event @event, ScriptAccessory accessory)
+    {
+        读条时间 = DateTime.Now;
+        if (isText)
+            accessory.Method.TextInfo("击退", duration: 4700);
+    }
 
     [ScriptMethod(
     name: "超增压",//分散
     eventType: EventTypeEnum.StartCasting,
-    eventCondition: new[] { "ActionId:regex:^(45663)$" },
+    eventCondition: new[] { "ActionId:regex:^(45670)$" },
     userControl: true
 )]
     public async void 超增压分散(Event @event, ScriptAccessory accessory)
     {
+        var delay = 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds;
+        if (delay > 0) await Task.Delay(delay);
         if (isText)
             accessory.Method.TextInfo("分散", duration: 4700);
         var ALLmember = new[]
@@ -72,8 +100,6 @@ public class 极格莱杨拉
         (Index: 7, Name: "D4")
     };
 
-        await Task.Delay(12000);
-
 
         foreach (var (index, name) in ALLmember)
         {
@@ -83,7 +109,7 @@ public class 极格莱杨拉
             dp.Owner = memberObj;
             dp.Scale = new Vector2(5);
             dp.Color = accessory.Data.DefaultDangerColor;
-            dp.DestoryAt = 7500;
+            dp.DestoryAt = 6000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             accessory.Method.TextInfo("分散", duration: 4700);
         }
@@ -96,6 +122,8 @@ public class 极格莱杨拉
 )]
     public async void 超增压分摊4TN(Event @event, ScriptAccessory accessory)
     {
+        var delay = 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds;
+        if (delay > 0) await Task.Delay(delay);
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
@@ -109,8 +137,7 @@ public class 极格莱杨拉
         (Index: 2, Name: "H1"),
         (Index: 3, Name: "H2")
 
-    };
-            await Task.Delay(12000);
+    };      
 
             foreach (var (index, name) in fourTN)
             {
@@ -120,7 +147,7 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultSafeColor;
-                dp.DestoryAt = 7500;
+                dp.DestoryAt = 6000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
                 accessory.Method.TextInfo("分摊", duration: 4700);
             }
@@ -137,6 +164,8 @@ public class 极格莱杨拉
 )]
     public async void 超增压分摊4DPS(Event @event, ScriptAccessory accessory)
     {
+        var delay = 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds;
+        if (delay > 0) await Task.Delay(delay);
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
@@ -151,7 +180,6 @@ public class 极格莱杨拉
         (Index: 7, Name: "D4")
 
     };
-            await Task.Delay(12000);
 
             foreach (var (index, name) in fourDPS)
             {
@@ -161,7 +189,7 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultSafeColor;
-                dp.DestoryAt = 7500;
+                dp.DestoryAt = 6000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
                 accessory.Method.TextInfo("分摊", duration: 4700);
             }
