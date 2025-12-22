@@ -90,12 +90,12 @@ using Dalamud.Game;
             return; 
             }
 
-            // 击退/吸引 45670/45677/45696 
-            if (actionId == 45670 || actionId == 45677 || actionId == 45696)
-            {
-                await Task.Delay(8500);
+        // 击退/吸引 45670/45677/45696 
+        if (actionId == 45670 || actionId == 45677 || actionId == 45696)
+        {
+            await Task.Delay(8500);
 
-
+            // 绘制 4TN 或 4DPS 的安全圈
             if (lastTargetIdForShare == 0x400024A8) // 4TN
             {
                 DrawMembers(accessory, new int[] { 0, 1, 2, 3 }, accessory.Data.DefaultSafeColor, "超增压");
@@ -104,15 +104,16 @@ using Dalamud.Game;
             {
                 DrawMembers(accessory, new int[] { 4, 5, 6, 7 }, accessory.Data.DefaultSafeColor, "超增压");
             }
-            if(lastActionIdForScatter == 45563);//分散
-                {
-                    DrawMembers(accessory, new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, accessory.Data.DefaultDangerColor, "超增压");
-                }
+            else if (lastActionIdForScatter == 45663) // 分散
+            {
+               
+                DrawMembers(accessory, new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, accessory.Data.DefaultDangerColor, "超增压");
             }
         }
+    }
 
 
-        private void DrawMembers(ScriptAccessory accessory, int[] indices, Vector4 color, string name)
+    private void DrawMembers(ScriptAccessory accessory, int[] indices, Vector4 color, string name)
         {
             foreach (var index in indices)
             {
