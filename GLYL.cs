@@ -84,10 +84,11 @@ userControl: true
 )]
     public async void 超增压分散(Event @event, ScriptAccessory accessory)
     {
-        var delay = 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds;
-        if (delay > 0) await Task.Delay(delay);
         if (isText)
             accessory.Method.TextInfo("分散", duration: 4700);
+        int delay = Math.Max(0, 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
+        await Task.Delay(delay);
+
         var ALLmember = new[]
         {
         (Index: 0, Name: "MT"),
@@ -122,10 +123,11 @@ userControl: true
 )]
     public async void 超增压分摊4TN(Event @event, ScriptAccessory accessory)
     {
-        var delay = 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds;
-        if (delay > 0) await Task.Delay(delay);
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
+        int delay = Math.Max(0, 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
+        await Task.Delay(delay);
+
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
             return;
         if (@event.TargetId == 0x400024A8)
@@ -164,10 +166,11 @@ userControl: true
 )]
     public async void 超增压分摊4DPS(Event @event, ScriptAccessory accessory)
     {
-        var delay = 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds;
-        if (delay > 0) await Task.Delay(delay);
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
+        int delay = Math.Max(0, 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
+        await Task.Delay(delay);
+
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
             return;
         if (@event.TargetId == 0x40002AF7)
