@@ -49,62 +49,40 @@ public class 极格莱杨拉
             return false;
         }
     }
-    private static DateTime 读条时间;
     [ScriptMethod(
-    name: "超增压抽雾",//吸引
-    eventType: EventTypeEnum.StartCasting,
-    eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
-    userControl: true
-)]
+        name: "超增压抽雾",
+        eventType: EventTypeEnum.StartCasting,
+        eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
+        userControl: true
+    )]
     public void 超增压抽雾(Event @event, ScriptAccessory accessory)
     {
-        读条时间 = DateTime.Now;
-        if (isText)
-            accessory.Method.TextInfo("吸引", duration: 4700);
+        if (isText) accessory.Method.TextInfo("吸引", duration: 4700);
+        _ = 延迟绘图任务(@event, accessory);
     }
 
     [ScriptMethod(
-name: "超增压急行",//击退
-eventType: EventTypeEnum.StartCasting,
-eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
-userControl: true
-)]
+        name: "超增压急行",
+        eventType: EventTypeEnum.StartCasting,
+        eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
+        userControl: true
+    )]
     public void 超增压急行(Event @event, ScriptAccessory accessory)
     {
-        读条时间 = DateTime.Now;
-        if (isText)
-            accessory.Method.TextInfo("击退", duration: 4700);
+        if (isText) accessory.Method.TextInfo("击退", duration: 4700);
+        _ = 延迟绘图任务(@event, accessory);
     }
 
-    [ScriptMethod(
-    name: "超增压",//分散
-    eventType: EventTypeEnum.StartCasting,
-    eventCondition: new[] { "ActionId:regex:^(45670)$" },
-    userControl: true
-)]
-    public async void 超增压分散(Event @event, ScriptAccessory accessory)
+    private async Task 延迟绘图任务(Event @event, ScriptAccessory accessory)
     {
-        if (isText)
-            accessory.Method.TextInfo("分散", duration: 4700);
-        int delay = Math.Max(0, 5700 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
-        await Task.Delay(delay);
+        await Task.Delay(5700); 
 
-        var ALLmember = new[]
+        var ALLmember = new[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+        foreach (var i in ALLmember)
         {
-        (Index: 0, Name: "MT"),
-        (Index: 1, Name: "ST"),
-        (Index: 2, Name: "H1"),
-        (Index: 3, Name: "H2"),
-        (Index: 4, Name: "D1"),
-        (Index: 5, Name: "D2"),
-        (Index: 6, Name: "D3"),
-        (Index: 7, Name: "D4")
-    };
+            var memberObj = accessory.Data.PartyList[i];
+            if (memberObj == null) continue;
 
-
-        foreach (var (index, name) in ALLmember)
-        {
-            var memberObj = accessory.Data.PartyList[index];
             var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "超增压分散";
             dp.Owner = memberObj;
@@ -114,36 +92,33 @@ userControl: true
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             accessory.Method.TextInfo("分散", duration: 4700);
         }
-    }
-    [ScriptMethod(
-    name: "超增压",//分摊
-    eventType: EventTypeEnum.StartCasting,
-    eventCondition: new[] { "ActionId:regex:^(45664)$" },
-    userControl: true
-)]
-    public async void 超增压分摊4TN(Event @event, ScriptAccessory accessory)
-    {
-        if (isText)
-            accessory.Method.TextInfo("分摊", duration: 4700);
-        int delay = Math.Max(0, 5700 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
-        await Task.Delay(delay);
 
-        if (!ParseObjectId(@event["TargetId"], out uint TargetId))
-            return;
-        if (@event.TargetId == 0x400024A8)
+        if (!ParseObjectId(@event["TargetId"], out uint TargetId)) return;
+
+        (int Index, string Name)[]? pointGroup = null;
+
+        if (@event.TargetId == 0x400024A8) // 4TN
         {
-            var fourTN = new[]
+            pointGroup = new[]
+            {
+                (0, "MT"), (1, "ST"), (2, "H1"), (3, "H2")
+            };
+        }
+        else if (@event.TargetId == 0x40002AF7) // 4DPS
         {
-        (Index: 0, Name: "MT"),
-        (Index: 1, Name: "ST"),
-        (Index: 2, Name: "H1"),
-        (Index: 3, Name: "H2")
+            pointGroup = new[]
+            {
+                (4, "D1"), (5, "D2"), (6, "D3"), (7, "D4")
+            };
+        }
 
-    };      
-
-            foreach (var (index, name) in fourTN)
+        if (pointGroup != null)
+        {
+            foreach (var (index, name) in pointGroup)
             {
                 var memberObj = accessory.Data.PartyList[index];
+                if (memberObj == null) continue;
+
                 var dp = accessory.Data.GetDefaultDrawProperties();
                 dp.Name = "超增压分摊";
                 dp.Owner = memberObj;
@@ -154,52 +129,8 @@ userControl: true
                 accessory.Method.TextInfo("分摊", duration: 4700);
             }
         }
-
-
     }
-        
-    [ScriptMethod(
-    name: "超增压",//分摊
-    eventType: EventTypeEnum.StartCasting,
-    eventCondition: new[] { "ActionId:regex:^(45664)$" },
-    userControl: true
-)]
-    public async void 超增压分摊4DPS(Event @event, ScriptAccessory accessory)
-    {
-        if (isText)
-            accessory.Method.TextInfo("分摊", duration: 4700);
-        int delay = Math.Max(0, 5700 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
-        await Task.Delay(delay);
 
-        if (!ParseObjectId(@event["TargetId"], out uint TargetId))
-            return;
-        if (@event.TargetId == 0x40002AF7)
-        {
-            var fourDPS = new[]
-        {
-        (Index: 4, Name: "D1"),
-        (Index: 5, Name: "D2"),
-        (Index: 6, Name: "D3"),
-        (Index: 7, Name: "D4")
-
-    };
-
-            foreach (var (index, name) in fourDPS)
-            {
-                var memberObj = accessory.Data.PartyList[index];
-                var dp = accessory.Data.GetDefaultDrawProperties();
-                dp.Name = "超增压分摊";
-                dp.Owner = memberObj;
-                dp.Scale = new Vector2(5);
-                dp.Color = accessory.Data.DefaultSafeColor;
-                dp.DestoryAt = 6000;
-                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-                accessory.Method.TextInfo("分摊", duration: 4700);
-            }
-        }
-
-
-    }
 
     [ScriptMethod(
     name: "以太炮",
