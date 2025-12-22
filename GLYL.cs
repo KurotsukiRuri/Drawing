@@ -49,6 +49,35 @@ public class 极格莱杨拉
             return false;
         }
     }
+    private bool canDrawDisperse = false;
+    private bool canDrawStack4TN = false;
+    private bool canDrawStack4DPS = false;
+
+    [ScriptMethod(
+        name: "超增压抽雾",
+        eventType: EventTypeEnum.ActionEffect,
+        eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
+        userControl: true
+    )]
+    public void 超增压抽雾判定(Event @event, ScriptAccessory accessory)
+    {
+        canDrawDisperse = true;
+        canDrawStack4TN = true;
+        canDrawStack4DPS = true;
+    }
+    [ScriptMethod(
+        name: "超增压急行",
+        eventType: EventTypeEnum.ActionEffect,
+        eventCondition: new[] { "ActionId:regex:^(45670)$" },
+        userControl: true
+    )]
+    public void 超增压急行判定(Event @event, ScriptAccessory accessory)
+    {
+        canDrawDisperse = true;
+        canDrawStack4TN = true;
+        canDrawStack4DPS = true;
+    }
+
     #region 抽雾/急行文字提示
     [ScriptMethod(
         name: "超增压抽雾",
@@ -84,10 +113,13 @@ public class 极格莱杨拉
     )]
     public async void 超增压分散(Event @event, ScriptAccessory accessory)
     {
+        if (!canDrawDisperse) return; 
+        canDrawDisperse = false;     
+        
         if (isText)
             accessory.Method.TextInfo("分散", duration: 4700);
 
-        await Task.Delay(5700); // 延迟 5.7 秒
+        
 
         var ALLmember = new[] { 0, 1, 2, 3, 4, 5, 6, 7 };
         foreach (var i in ALLmember)
@@ -116,13 +148,15 @@ public class 极格莱杨拉
     )]
     public async void 超增压分摊(Event @event, ScriptAccessory accessory)
     {
+        if (!canDrawDisperse) return; // 没有触发 ActionEffect 则不绘制
+        canDrawDisperse = false;      // 重置标记
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
             return;
 
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
 
-        await Task.Delay(5700); // 延迟 5.7 秒
+        
 
         (int Index, string Name)[]? pointGroup = null;
 
