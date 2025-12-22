@@ -28,7 +28,7 @@ using Dalamud.Game;
        name: "极格莱杨拉",
        territorys: new uint[] { 1308 },
        guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-       version: "0.0.0.3",
+       version: "0.0.0.2",
        author: "Baka-Water77",
        note: null
     )]
@@ -104,7 +104,7 @@ using Dalamud.Game;
             {
                 DrawMembers(accessory, new int[] { 4, 5, 6, 7 }, accessory.Data.DefaultSafeColor, "超增压");
             }
-            else if(lastActionIdForScatter == 45563);//分散
+            if(lastActionIdForScatter == 45563);//分散
                 {
                     DrawMembers(accessory, new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, accessory.Data.DefaultDangerColor, "超增压");
                 }
