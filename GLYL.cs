@@ -100,7 +100,7 @@ public class 极格莱杨拉
             accessory.Method.TextInfo("分摊", duration: 4700);
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
             return;
-        if (@event.TargetId == 0x40002AF7)
+        if (@event.TargetId == 0x400024A8)
         {
             var fourTN = new[]
         {
@@ -141,7 +141,7 @@ public class 极格莱杨拉
             accessory.Method.TextInfo("分摊", duration: 4700);
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
             return;
-        if (@event.TargetId == 0x40002AF8)
+        if (@event.TargetId == 0x40002AF7)
         {
             var fourDPS = new[]
         {
