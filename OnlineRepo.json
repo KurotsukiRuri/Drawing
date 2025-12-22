@@ -22,7 +22,7 @@
     {
         "Name": "极格莱杨拉P2异世界",
         "Guid": "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-        "Version": "0.0.0.4",
+        "Version": "0.0.0.2",
         "Author": "Baka-Water77",
         "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/GLYL.cs",
         "TerritoryIds": [1308],
@@ -30,6 +30,7 @@
         "UpdateInfo": "v0.0.0.1:\n    尝试绘制P2分摊分散范围提示 v0.0.0.2尝试添加P1阶段分摊分散提示及绘制"
     }
 ]
+
 
 
 
