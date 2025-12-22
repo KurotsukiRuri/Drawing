@@ -27,7 +27,7 @@ namespace BakaWater77.极格莱杨拉;
    name: "极格莱杨拉",
    territorys: new uint[] { 1308 },
    guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-   version: "0.0.0.2",
+   version: "0.0.0.3",
    author: "Baka-Water77",
    note: null
 )]
@@ -79,32 +79,10 @@ public class 极格莱杨拉
         if (actionId == 45663) // 分散
         {
             if (isText)
-                accessory.Method.TextInfo("分散", duration: 4700);
+                accessory.Method.TextInfo("稍后分散", duration: 4700);
 
 
-            var ALLmember = new[]
-            {
-            (Index: 0, Name: "MT"),
-            (Index: 1, Name: "ST"),
-            (Index: 2, Name: "H1"),
-            (Index: 3, Name: "H2"),
-            (Index: 4, Name: "D1"),
-            (Index: 5, Name: "D2"),
-            (Index: 6, Name: "D3"),
-            (Index: 7, Name: "D4")
-        };
-
-            foreach (var (index, name) in ALLmember)
-            {
-                var memberObj = accessory.Data.PartyList[index];
-                var dp = accessory.Data.GetDefaultDrawProperties();
-                dp.Name = "超增压分散";
-                dp.Owner = memberObj;
-                dp.Scale = new Vector2(5);
-                dp.Color = accessory.Data.DefaultDangerColor;
-                dp.DestoryAt = 6000;
-                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-            }
+           
         }
         else if (actionId == 45670|| actionId == 45677 || actionId == 45696) //击退or吸引
         {
@@ -130,7 +108,7 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultDangerColor;
-                dp.DestoryAt = 6000;
+                dp.DestoryAt = 4000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
@@ -150,7 +128,7 @@ public class 极格莱杨拉
         if (actionId == 45664) // 分摊
         {
             if (isText)
-                accessory.Method.TextInfo("分摊", duration: 4700);
+                accessory.Method.TextInfo("稍后分摊", duration: 4700);
 
 
             var ALLmember = new[]
@@ -159,7 +137,7 @@ public class 极格莱杨拉
             (Index: 1, Name: "ST"),
             (Index: 2, Name: "H1"),
             (Index: 3, Name: "H2")
-            
+
         };
 
             foreach (var (index, name) in ALLmember)
@@ -177,8 +155,13 @@ public class 极格莱杨拉
         else if (actionId == 45670 || actionId == 45677 || actionId == 45696) //击退or吸引
         {
             await Task.Delay(8500);
+            if (!ParseObjectId(@event["TargetId"], out uint TargetId))
+                return;
+            if (@event.TargetId == 0x400024A8)
+            {
 
-            var ALLmember = new[]
+
+                var ALLmember = new[]
             {
             (Index: 0, Name: "MT"),
             (Index: 1, Name: "ST"),
@@ -190,19 +173,19 @@ public class 极格莱杨拉
             (Index: 7, Name: "D4")
         };
 
-            foreach (var (index, name) in ALLmember)
-            {
-                var memberObj = accessory.Data.PartyList[index];
-                var dp = accessory.Data.GetDefaultDrawProperties();
-                dp.Name = "超增压";
-                dp.Owner = memberObj;
-                dp.Scale = new Vector2(5);
-                dp.Color = accessory.Data.DefaultDangerColor;
-                dp.DestoryAt = 4000;
-                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+                foreach (var (index, name) in ALLmember)
+                {
+                    var memberObj = accessory.Data.PartyList[index];
+                    var dp = accessory.Data.GetDefaultDrawProperties();
+                    dp.Name = "超增压";
+                    dp.Owner = memberObj;
+                    dp.Scale = new Vector2(5);
+                    dp.Color = accessory.Data.DefaultDangerColor;
+                    dp.DestoryAt = 4000;
+                    accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+                }
             }
         }
-
     }
 
     [ScriptMethod(
@@ -220,7 +203,7 @@ public class 极格莱杨拉
         if (actionId == 45664) // 分摊
         {
             if (isText)
-                accessory.Method.TextInfo("分摊", duration: 4700);
+                accessory.Method.TextInfo("稍后分摊", duration: 4700);
 
 
             var ALLmember = new[]
@@ -247,7 +230,12 @@ public class 极格莱杨拉
         {
             await Task.Delay(8500);
 
-            var ALLmember = new[]
+            if (!ParseObjectId(@event["TargetId"], out uint TargetId))
+                return;
+            if (@event.TargetId == 0x40002AF7)
+            {
+
+                var ALLmember = new[]
             {
             (Index: 0, Name: "MT"),
             (Index: 1, Name: "ST"),
@@ -259,16 +247,17 @@ public class 极格莱杨拉
             (Index: 7, Name: "D4")
         };
 
-            foreach (var (index, name) in ALLmember)
-            {
-                var memberObj = accessory.Data.PartyList[index];
-                var dp = accessory.Data.GetDefaultDrawProperties();
-                dp.Name = "超增压";
-                dp.Owner = memberObj;
-                dp.Scale = new Vector2(5);
-                dp.Color = accessory.Data.DefaultSafeColor;
-                dp.DestoryAt = 4000;
-                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+                foreach (var (index, name) in ALLmember)
+                {
+                    var memberObj = accessory.Data.PartyList[index];
+                    var dp = accessory.Data.GetDefaultDrawProperties();
+                    dp.Name = "超增压";
+                    dp.Owner = memberObj;
+                    dp.Scale = new Vector2(5);
+                    dp.Color = accessory.Data.DefaultSafeColor;
+                    dp.DestoryAt = 4000;
+                    accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+                }
             }
         }
     }
