@@ -1,22 +1,23 @@
-    using System;
-    using KodakkuAssist.Module.GameEvent;
-    using KodakkuAssist.Script;
-    using KodakkuAssist.Module.GameEvent.Struct;
-    using KodakkuAssist.Module.Draw;
+using Dalamud.Game;
+    using Dalamud.Plugin.Services;
+    using Dalamud.Utility.Numerics;
     using KodakkuAssist.Data;
-    using KodakkuAssist.Module.Draw.Manager;
-    using KodakkuAssist.Module.GameOperate;
-    using KodakkuAssist.Module.GameEvent.Types;
     using KodakkuAssist.Extensions;
+    using KodakkuAssist.Module.Draw;
+    using KodakkuAssist.Module.Draw.Manager;
+    using KodakkuAssist.Module.GameEvent;
+    using KodakkuAssist.Module.GameEvent.Struct;
+    using KodakkuAssist.Module.GameEvent.Types;
+    using KodakkuAssist.Module.GameOperate;
+    using KodakkuAssist.Script;
+    using Newtonsoft.Json;
+    using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Numerics;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Numerics;
-    using Newtonsoft.Json;
-    using System.Linq;
-    using System.ComponentModel;
-    using Dalamud.Utility.Numerics;
-    using Dalamud.Plugin.Services;
 
 
     namespace BakaWater77.极格莱杨拉;
@@ -27,7 +28,7 @@
        name: "极格莱杨拉",
        territorys: new uint[] { 1308 },
        guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-       version: "0.0.0.2",
+       version: "0.0.0.3",
        author: "Baka-Water77",
        note: null
     )]
@@ -51,7 +52,7 @@
         }
         private Dictionary<uint, Event> startCastingCache = new();
 
-        private uint lastTargetIdForScatter = 0;  // 分散
+        private uint lastActionIdForScatter = 0;  // 分散
         private uint lastTargetIdForShare = 0;    // 分摊
 
 
@@ -63,19 +64,17 @@
         )]
         public async void 超增压(Event @event, ScriptAccessory accessory)
         {
-            if (!int.TryParse(@event["ActionId"], out var actionId))
-                return;
+        if (!int.TryParse(@event["ActionId"], out var actionId))
+            return;
 
-            // 分散 45663
-            if (actionId == 45663)
+        // 分散 45663
+        if (actionId == 45663)
             {
                 if (isText)
                     accessory.Method.TextInfo("稍后分散", duration: 4700);
+            lastActionIdForScatter = (uint)actionId;
 
-                if (ParseObjectId(@event["TargetId"], out uint TargetId))
-                    lastTargetIdForScatter = TargetId;
 
-               
             return;
             }
 
@@ -87,7 +86,7 @@
 
                 if (ParseObjectId(@event["TargetId"], out uint TargetId))
                     lastTargetIdForShare = TargetId;
-            ClearLastTargetIds();
+           
             return; 
             }
 
@@ -96,16 +95,16 @@
             {
                 await Task.Delay(8500);
 
-            
-                if (lastTargetIdForShare == 0x400024A8) // 4TN
-                {
-                    DrawMembers(accessory, new int[] { 0, 1, 2, 3 }, accessory.Data.DefaultSafeColor, "超增压");
-                }
-                else if (lastTargetIdForShare == 0x40002AF7) // 4DPS
-                {
-                    DrawMembers(accessory, new int[] { 4, 5, 6, 7 }, accessory.Data.DefaultSafeColor, "超增压");
-                }
-                else 
+
+            if (lastTargetIdForShare == 0x400024A8) // 4TN
+            {
+                DrawMembers(accessory, new int[] { 0, 1, 2, 3 }, accessory.Data.DefaultSafeColor, "超增压");
+            }
+            else if (lastTargetIdForShare == 0x40002AF7) // 4DPS
+            {
+                DrawMembers(accessory, new int[] { 4, 5, 6, 7 }, accessory.Data.DefaultSafeColor, "超增压");
+            }
+            else if(lastActionIdForScatter == 45563);//分散
                 {
                     DrawMembers(accessory, new int[] { 0, 1, 2, 3, 4, 5, 6, 7 }, accessory.Data.DefaultDangerColor, "超增压");
                 }
@@ -129,11 +128,7 @@
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
-    private void ClearLastTargetIds()
-    {
-        lastTargetIdForScatter = 0;
-        lastTargetIdForShare = 0;
-    }
+
 
 
 
@@ -202,6 +197,7 @@
             }
         }
     }
+
 
 
 
