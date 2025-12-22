@@ -27,7 +27,7 @@ namespace BakaWater77.极格莱杨拉;
    name: "极格莱杨拉",
    territorys: new uint[] { 1308 },
    guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-   version: "0.0.0.3",
+   version: "0.0.0.2",
    author: "Baka-Water77",
    note: null
 )]
@@ -52,55 +52,87 @@ public class 极格莱杨拉
     private Dictionary<uint, Event> startCastingCache = new();
 
     [ScriptMethod(
-    name: "超增压抽雾/急行判定",
-    eventType: EventTypeEnum.ActionEffect,
+    name: "超增压抽雾/急行",
+    eventType: EventTypeEnum.StartCasting,
     eventCondition: new[] { "ActionId:regex:^(45677|45696|45670)$" },
     userControl: true
 )]
-    public void 超增压抽雾急行判定(Event @event, ScriptAccessory accessory)
+    public void 超增压抽雾急行(Event @event, ScriptAccessory accessory)
     {
+
 
     }
-    
+
 
     [ScriptMethod(
-      name: "超增压",//分散
-      eventType: EventTypeEnum.StartCasting,
-      eventCondition: new[] { "ActionId:regex:^(45663)$" },
-      userControl: true
-  )]
+     name: "超增压",
+     eventType: EventTypeEnum.StartCasting,
+     eventCondition: new[] { "ActionId:regex:^(45663|45670|45677|45696)$" },//45663是分散，45670击退，45677和45696是吸引
+     userControl: true
+ )]
     public async void 超增压分散(Event @event, ScriptAccessory accessory)
     {
-        if (isText)
-            accessory.Method.TextInfo("分散", duration: 4700);
+        // 获取当前技能ID
+        if (!int.TryParse(@event["ActionId"], out var actionId))
+            return;
 
-        await Task.Delay(12000);
-
-        var ALLmember = new[]
+        if (actionId == 45663) // 分散
         {
-        (Index: 0, Name: "MT"),
-        (Index: 1, Name: "ST"),
-        (Index: 2, Name: "H1"),
-        (Index: 3, Name: "H2"),
-        (Index: 4, Name: "D1"),
-        (Index: 5, Name: "D2"),
-        (Index: 6, Name: "D3"),
-        (Index: 7, Name: "D4")
-    };
+            if (isText)
+                accessory.Method.TextInfo("分散", duration: 4700);
 
 
-        foreach (var (index, name) in ALLmember)
+            var ALLmember = new[]
+            {
+            (Index: 0, Name: "MT"),
+            (Index: 1, Name: "ST"),
+            (Index: 2, Name: "H1"),
+            (Index: 3, Name: "H2"),
+            (Index: 4, Name: "D1"),
+            (Index: 5, Name: "D2"),
+            (Index: 6, Name: "D3"),
+            (Index: 7, Name: "D4")
+        };
+
+            foreach (var (index, name) in ALLmember)
+            {
+                var memberObj = accessory.Data.PartyList[index];
+                var dp = accessory.Data.GetDefaultDrawProperties();
+                dp.Name = "超增压分散";
+                dp.Owner = memberObj;
+                dp.Scale = new Vector2(5);
+                dp.Color = accessory.Data.DefaultDangerColor;
+                dp.DestoryAt = 6000;
+                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+            }
+        }
+        else if (actionId == 45670|| actionId == 45677 || actionId == 45696) //击退or吸引
         {
-            var memberObj = accessory.Data.PartyList[index];
-            var dp = accessory.Data.GetDefaultDrawProperties();
-            dp.Name = "超增压分散";
-            dp.Owner = memberObj;
-            dp.Scale = new Vector2(5);
-            dp.Color = accessory.Data.DefaultDangerColor;
-            dp.DestoryAt = 6000;
-            accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-            accessory.Method.TextInfo("分散", duration: 4700);
+            await Task.Delay(8500);
 
+            var ALLmember = new[]
+            {
+            (Index: 0, Name: "MT"),
+            (Index: 1, Name: "ST"),
+            (Index: 2, Name: "H1"),
+            (Index: 3, Name: "H2"),
+            (Index: 4, Name: "D1"),
+            (Index: 5, Name: "D2"),
+            (Index: 6, Name: "D3"),
+            (Index: 7, Name: "D4")
+        };
+
+            foreach (var (index, name) in ALLmember)
+            {
+                var memberObj = accessory.Data.PartyList[index];
+                var dp = accessory.Data.GetDefaultDrawProperties();
+                dp.Name = "超增压";
+                dp.Owner = memberObj;
+                dp.Scale = new Vector2(5);
+                dp.Color = accessory.Data.DefaultDangerColor;
+                dp.DestoryAt = 6000;
+                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+            }
         }
     }
     [ScriptMethod(
@@ -111,39 +143,65 @@ public class 极格莱杨拉
 )]
     public async void 超增压分摊4TN(Event @event, ScriptAccessory accessory)
     {
-        if (isText)
-            accessory.Method.TextInfo("分摊", duration: 4700);
-        await Task.Delay(12000);
-
-
-        if (!ParseObjectId(@event["TargetId"], out uint TargetId))
+        // 获取当前技能ID
+        if (!int.TryParse(@event["ActionId"], out var actionId))
             return;
-        if (@event.TargetId == 0x400024A8)
-        {
-            var fourTN = new[]
-        {
-        (Index: 0, Name: "MT"),
-        (Index: 1, Name: "ST"),
-        (Index: 2, Name: "H1"),
-        (Index: 3, Name: "H2")
 
-    };
+        if (actionId == 45664) // 分摊
+        {
+            if (isText)
+                accessory.Method.TextInfo("分摊", duration: 4700);
 
-            foreach (var (index, name) in fourTN)
+
+            var ALLmember = new[]
+            {
+            (Index: 0, Name: "MT"),
+            (Index: 1, Name: "ST"),
+            (Index: 2, Name: "H1"),
+            (Index: 3, Name: "H2")
+            
+        };
+
+            foreach (var (index, name) in ALLmember)
             {
                 var memberObj = accessory.Data.PartyList[index];
                 var dp = accessory.Data.GetDefaultDrawProperties();
-                dp.Name = "超增压分摊";
+                dp.Name = "超增压分散";
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
-                dp.Color = accessory.Data.DefaultSafeColor;
+                dp.Color = accessory.Data.DefaultDangerColor;
                 dp.DestoryAt = 6000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-                accessory.Method.TextInfo("分摊", duration: 4700);
-
             }
         }
+        else if (actionId == 45670 || actionId == 45677 || actionId == 45696) //击退or吸引
+        {
+            await Task.Delay(8500);
 
+            var ALLmember = new[]
+            {
+            (Index: 0, Name: "MT"),
+            (Index: 1, Name: "ST"),
+            (Index: 2, Name: "H1"),
+            (Index: 3, Name: "H2"),
+            (Index: 4, Name: "D1"),
+            (Index: 5, Name: "D2"),
+            (Index: 6, Name: "D3"),
+            (Index: 7, Name: "D4")
+        };
+
+            foreach (var (index, name) in ALLmember)
+            {
+                var memberObj = accessory.Data.PartyList[index];
+                var dp = accessory.Data.GetDefaultDrawProperties();
+                dp.Name = "超增压";
+                dp.Owner = memberObj;
+                dp.Scale = new Vector2(5);
+                dp.Color = accessory.Data.DefaultDangerColor;
+                dp.DestoryAt = 6000;
+                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+            }
+        }
 
     }
 
@@ -155,40 +213,64 @@ public class 极格莱杨拉
 )]
     public async void 超增压分摊4DPS(Event @event, ScriptAccessory accessory)
     {
-        if (isText)
-            accessory.Method.TextInfo("分摊", duration: 4700);
-
-        await Task.Delay(12000);
-
-
-        if (!ParseObjectId(@event["TargetId"], out uint TargetId))
+        // 获取当前技能ID
+        if (!int.TryParse(@event["ActionId"], out var actionId))
             return;
-        if (@event.TargetId == 0x40002AF7)
-        {
-            var fourDPS = new[]
-        {
-        (Index: 4, Name: "D1"),
-        (Index: 5, Name: "D2"),
-        (Index: 6, Name: "D3"),
-        (Index: 7, Name: "D4")
 
-    };
+        if (actionId == 45664) // 分摊
+        {
+            if (isText)
+                accessory.Method.TextInfo("分摊", duration: 4700);
 
-            foreach (var (index, name) in fourDPS)
+
+            var ALLmember = new[]
+            {
+            (Index: 4, Name: "D1"),
+            (Index: 5, Name: "D2"),
+            (Index: 6, Name: "D3"),
+            (Index: 7, Name: "D4")
+        };
+
+            foreach (var (index, name) in ALLmember)
             {
                 var memberObj = accessory.Data.PartyList[index];
                 var dp = accessory.Data.GetDefaultDrawProperties();
                 dp.Name = "超增压分摊";
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
-                dp.Color = accessory.Data.DefaultSafeColor;
+                dp.Color = accessory.Data.DefaultDangerColor;
                 dp.DestoryAt = 6000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-                accessory.Method.TextInfo("分摊", duration: 4700);
             }
         }
+        else if (actionId == 45670 || actionId == 45677 || actionId == 45696) //击退or吸引
+        {
+            await Task.Delay(8500);
 
+            var ALLmember = new[]
+            {
+            (Index: 0, Name: "MT"),
+            (Index: 1, Name: "ST"),
+            (Index: 2, Name: "H1"),
+            (Index: 3, Name: "H2"),
+            (Index: 4, Name: "D1"),
+            (Index: 5, Name: "D2"),
+            (Index: 6, Name: "D3"),
+            (Index: 7, Name: "D4")
+        };
 
+            foreach (var (index, name) in ALLmember)
+            {
+                var memberObj = accessory.Data.PartyList[index];
+                var dp = accessory.Data.GetDefaultDrawProperties();
+                dp.Name = "超增压";
+                dp.Owner = memberObj;
+                dp.Scale = new Vector2(5);
+                dp.Color = accessory.Data.DefaultDangerColor;
+                dp.DestoryAt = 6000;
+                accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+            }
+        }
     }
 
 
