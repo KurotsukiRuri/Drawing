@@ -28,7 +28,7 @@ using Dalamud.Game;
        name: "极格莱杨拉",
        territorys: new uint[] { 1308 },
        guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-       version: "0.0.0.2",
+       version: "0.0.0.3",
        author: "Baka-Water77",
        note: null
     )]
@@ -72,6 +72,8 @@ using Dalamud.Game;
             {
                 if (isText)
                     accessory.Method.TextInfo("稍后分散", duration: 4700);
+
+            lastTargetIdForShare = 0;
             lastActionIdForScatter = (uint)actionId;
 
 
@@ -85,7 +87,9 @@ using Dalamud.Game;
                     accessory.Method.TextInfo("稍后分摊", duration: 4700);
 
                 if (ParseObjectId(@event["TargetId"], out uint TargetId))
-                    lastTargetIdForShare = TargetId;
+
+                lastActionIdForScatter = 0;
+            lastTargetIdForShare = TargetId;
            
             return; 
             }
