@@ -113,14 +113,13 @@ public class 极格莱杨拉
     )]
     public async void 超增压分散(Event @event, ScriptAccessory accessory)
     {
+        if (isText)
+            accessory.Method.TextInfo("稍后分散", duration: 4700);
+
         if (!canDrawDisperse) return; 
         canDrawDisperse = false;     
         
-        if (isText)
-            accessory.Method.TextInfo("分散", duration: 4700);
-
-        
-
+  
         var ALLmember = new[] { 0, 1, 2, 3, 4, 5, 6, 7 };
         foreach (var i in ALLmember)
         {
@@ -134,7 +133,6 @@ public class 极格莱杨拉
             dp.Color = accessory.Data.DefaultDangerColor;
             dp.DestoryAt = 6000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-            accessory.Method.TextInfo("分散", duration: 4700);
         }
     }
     #endregion
@@ -148,15 +146,19 @@ public class 极格莱杨拉
     )]
     public async void 超增压分摊(Event @event, ScriptAccessory accessory)
     {
-        if (!canDrawDisperse) return; // 没有触发 ActionEffect 则不绘制
-        canDrawDisperse = false;      // 重置标记
+        if (isText)
+            accessory.Method.TextInfo("稍后分摊", duration: 4700);
+        if (!canDrawDisperse) return; 
+        canDrawDisperse = false;      
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
             return;
+        if (TargetId == 0x400024A8 && !canDrawStack4TN) return; 
+        if (TargetId == 0x40002AF7 && !canDrawStack4DPS) return;
+        if (TargetId == 0x400024A8) canDrawStack4TN = false;
+        if (TargetId == 0x40002AF7) canDrawStack4DPS = false;
 
-        if (isText)
-            accessory.Method.TextInfo("分摊", duration: 4700);
 
-        
+
 
         (int Index, string Name)[]? pointGroup = null;
 
