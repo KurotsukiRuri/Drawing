@@ -83,8 +83,9 @@ public class 极格莱杨拉
             dp.Owner = memberObj;
             dp.Scale = new Vector2(5);
             dp.Color = accessory.Data.DefaultDangerColor;
-            dp.DestoryAt = 6000;
+            dp.DestoryAt = 5000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+            accessory.Method.TextInfo("分散", duration: 4700);
         }
     }
     [ScriptMethod(
@@ -99,7 +100,7 @@ public class 极格莱杨拉
             accessory.Method.TextInfo("分摊", duration: 4700);
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
             return;
-        if (TargetId == 0x40002AF7)
+        if (@event.TargetId == 0x40002AF7)
         {
             var fourTN = new[]
         {
@@ -119,8 +120,9 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultSafeColor;
-                dp.DestoryAt = 4000;
+                dp.DestoryAt = 5000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+                accessory.Method.TextInfo("分摊", duration: 4700);
             }
         }
 
@@ -139,7 +141,7 @@ public class 极格莱杨拉
             accessory.Method.TextInfo("分摊", duration: 4700);
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
             return;
-        if (TargetId == 0x40002AF7)
+        if (@event.TargetId == 0x40002AF8)
         {
             var fourDPS = new[]
         {
@@ -159,8 +161,9 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultSafeColor;
-                dp.DestoryAt = 4000;
+                dp.DestoryAt = 5000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+                accessory.Method.TextInfo("分摊", duration: 4700);
             }
         }
 
