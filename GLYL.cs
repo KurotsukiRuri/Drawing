@@ -99,7 +99,7 @@
         {
             await Task.Delay(8500);
 
-            // 绘制 4TN 或 4DPS 的安全圈
+            
             if (lastTargetIdForShare == 0x400024A8) // 4TN
             {
                 DrawMembers(accessory, new int[] { 0, 1, 2, 3 }, accessory.Data.DefaultSafeColor, "超增压");
