@@ -27,7 +27,7 @@ namespace BakaWater77.极格莱杨拉;
    name: "极格莱杨拉",
    territorys: new uint[] { 1308 },
    guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-   version: "0.0.0.3",
+   version: "0.0.0.2",
    author: "Baka-Water77",
    note: null
 )]
@@ -170,7 +170,7 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultDangerColor;
-                dp.DestoryAt = 6000;
+                dp.DestoryAt = 4000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
@@ -198,7 +198,7 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultDangerColor;
-                dp.DestoryAt = 6000;
+                dp.DestoryAt = 4000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
@@ -238,8 +238,8 @@ public class 极格莱杨拉
                 dp.Name = "超增压分摊";
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
-                dp.Color = accessory.Data.DefaultDangerColor;
-                dp.DestoryAt = 6000;
+                dp.Color = accessory.Data.DefaultSafeColor;
+                dp.DestoryAt = 4000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
@@ -266,8 +266,8 @@ public class 极格莱杨拉
                 dp.Name = "超增压";
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
-                dp.Color = accessory.Data.DefaultDangerColor;
-                dp.DestoryAt = 6000;
+                dp.Color = accessory.Data.DefaultSafeColor;
+                dp.DestoryAt = 4000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
