@@ -31,6 +31,7 @@ namespace BakaWater77.极格莱杨拉;
    author: "Baka-Water77",
    note: null
 )]
+
 public class 极格莱杨拉
 {
     public bool isText { get; set; } = true;
@@ -48,149 +49,197 @@ public class 极格莱杨拉
         {
             return false;
         }
+        
+
     }
-    private bool canDrawDisperse = false;
-    private bool canDrawStack4TN = false;
-    private bool canDrawStack4DPS = false;
+
+    private Dictionary<uint, Action<ScriptAccessory>> _drawActions = new();
+
+    public interface IActionEffectJudge
+    {
+        void OnKnockback(Event @event, ScriptAccessory accessory);
+        void OnPullIn(Event @event, ScriptAccessory accessory);
+
+        bool IsKnockback(Event @event, ScriptAccessory accessory);
+        bool IsPullIn(Event @event, ScriptAccessory accessory);
+    }
+    public class ActionEffectJudgeImpl : IActionEffectJudge
+    {
+        private readonly HashSet<uint> _knockbackSkills = new(); // 存储触发过击退的技能ID
+        private readonly HashSet<uint> _pullInSkills = new();    // 存储触发过吸引的技能ID
+
+        public void OnKnockback(Event @event, ScriptAccessory accessory)
+        {
+            _knockbackSkills.Add(@event.ActionId);
+        }
+
+        public void OnPullIn(Event @event, ScriptAccessory accessory)
+        {
+            _pullInSkills.Add(@event.ActionId);
+        }
+
+        public bool IsKnockback(Event @event, ScriptAccessory accessory)
+        {
+            return _knockbackSkills.Contains(@event.ActionId);
+        }
+
+        public bool IsPullIn(Event @event, ScriptAccessory accessory)
+        {
+            return _pullInSkills.Contains(@event.ActionId);
+        }
+    }
+
+    private readonly IActionEffectJudge _aeJudge = new ActionEffectJudgeImpl();
 
     [ScriptMethod(
-        name: "超增压抽雾",
-        eventType: EventTypeEnum.ActionEffect,
-        eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
-        userControl: true
-    )]
+    name: "超增压抽雾|急行判定",
+    eventType: EventTypeEnum.ActionEffect,
+    eventCondition: new[] { "ActionId:regex:^(45677|45696|45670)$" },
+    userControl: true
+)]
     public void 超增压抽雾判定(Event @event, ScriptAccessory accessory)
     {
-        canDrawDisperse = true;
-        canDrawStack4TN = true;
-        canDrawStack4DPS = true;
-    }
-    [ScriptMethod(
-        name: "超增压急行",
-        eventType: EventTypeEnum.ActionEffect,
-        eventCondition: new[] { "ActionId:regex:^(45670)$" },
-        userControl: true
-    )]
-    public void 超增压急行判定(Event @event, ScriptAccessory accessory)
-    {
-        canDrawDisperse = true;
-        canDrawStack4TN = true;
-        canDrawStack4DPS = true;
+        if (@event.ActionId == 45670 || @event.ActionId == 45677)
+            _aeJudge.OnKnockback(@event, accessory);
+        else if (@event.ActionId == 45696)
+            _aeJudge.OnPullIn(@event, accessory);
+
     }
 
-    #region 抽雾/急行文字提示
-    [ScriptMethod(
-        name: "超增压抽雾",
-        eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
-        userControl: true
-    )]
-    public void 超增压抽雾(Event @event, ScriptAccessory accessory)
-    {
-        if (isText)
-            accessory.Method.TextInfo("吸引", duration: 4700);
-    }
 
     [ScriptMethod(
-        name: "超增压急行",
-        eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(45670)$" },
-        userControl: true
-    )]
-    public void 超增压急行(Event @event, ScriptAccessory accessory)
-    {
-        if (isText)
-            accessory.Method.TextInfo("击退", duration: 4700);
-    }
-    #endregion
-
-    #region 分散绘制
-    [ScriptMethod(
-        name: "超增压分散",
-        eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(45663)$" },
-        userControl: true
-    )]
+      name: "超增压",//分散
+      eventType: EventTypeEnum.StartCasting,
+      eventCondition: new[] { "ActionId:regex:^(45670)$" },
+      userControl: true
+  )]
     public async void 超增压分散(Event @event, ScriptAccessory accessory)
     {
         if (isText)
-            accessory.Method.TextInfo("稍后分散", duration: 4700);
-
-        if (!canDrawDisperse) return; 
-        canDrawDisperse = false;     
-        
-  
-        var ALLmember = new[] { 0, 1, 2, 3, 4, 5, 6, 7 };
-        foreach (var i in ALLmember)
+            accessory.Method.TextInfo("分散", duration: 4700);
+        if (_aeJudge.IsKnockback(@event, accessory))
         {
-            var memberObj = accessory.Data.PartyList[i];
-            if (memberObj == null) continue;
-
-            var dp = accessory.Data.GetDefaultDrawProperties();
-            dp.Name = "超增压分散";
-            dp.Owner = memberObj;
-            dp.Scale = new Vector2(5);
-            dp.Color = accessory.Data.DefaultDangerColor;
-            dp.DestoryAt = 6000;
-            accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-        }
-    }
-    #endregion
-
-    #region 分摊绘制
-    [ScriptMethod(
-        name: "超增压分摊",
-        eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(45664)$" },
-        userControl: true
-    )]
-    public async void 超增压分摊(Event @event, ScriptAccessory accessory)
-    {
-        if (isText)
-            accessory.Method.TextInfo("稍后分摊", duration: 4700);
-        if (!canDrawDisperse) return; 
-        canDrawDisperse = false;      
-        if (!ParseObjectId(@event["TargetId"], out uint TargetId))
-            return;
-        if (TargetId == 0x400024A8 && !canDrawStack4TN) return; 
-        if (TargetId == 0x40002AF7 && !canDrawStack4DPS) return;
-        if (TargetId == 0x400024A8) canDrawStack4TN = false;
-        if (TargetId == 0x40002AF7) canDrawStack4DPS = false;
 
 
 
-
-        (int Index, string Name)[]? pointGroup = null;
-
-        // 判断 TargetId 决定 4TN / 4DPS
-        if (@event.TargetId == 0x400024A8) // 4TN
+            var ALLmember = new[]
         {
-            pointGroup = new[] { (0, "MT"), (1, "ST"), (2, "H1"), (3, "H2") };
-        }
-        else if (@event.TargetId == 0x40002AF7) // 4DPS
-        {
-            pointGroup = new[] { (4, "D1"), (5, "D2"), (6, "D3"), (7, "D4") };
-        }
+        (Index: 0, Name: "MT"),
+        (Index: 1, Name: "ST"),
+        (Index: 2, Name: "H1"),
+        (Index: 3, Name: "H2"),
+        (Index: 4, Name: "D1"),
+        (Index: 5, Name: "D2"),
+        (Index: 6, Name: "D3"),
+        (Index: 7, Name: "D4")
+    };
 
-        if (pointGroup != null)
-        {
-            foreach (var (index, name) in pointGroup)
+
+            foreach (var (index, name) in ALLmember)
             {
                 var memberObj = accessory.Data.PartyList[index];
-                if (memberObj == null) continue;
-
                 var dp = accessory.Data.GetDefaultDrawProperties();
-                dp.Name = "超增压分摊";
+                dp.Name = "超增压分散";
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
-                dp.Color = accessory.Data.DefaultSafeColor;
+                dp.Color = accessory.Data.DefaultDangerColor;
                 dp.DestoryAt = 6000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-                accessory.Method.TextInfo("分摊", duration: 4700);
+                accessory.Method.TextInfo("分散", duration: 4700);
             }
         }
     }
-    #endregion
+    [ScriptMethod(
+    name: "超增压",//分摊
+    eventType: EventTypeEnum.StartCasting,
+    eventCondition: new[] { "ActionId:regex:^(45664)$" },
+    userControl: true
+)]
+    public async void 超增压分摊4TN(Event @event, ScriptAccessory accessory)
+    {
+        if (isText)
+            accessory.Method.TextInfo("分摊", duration: 4700);
+
+        if (_aeJudge.IsKnockback(@event, accessory))
+        {
+
+
+
+
+            if (!ParseObjectId(@event["TargetId"], out uint TargetId))
+                return;
+            if (@event.TargetId == 0x400024A8)
+            {
+                var fourTN = new[]
+            {
+        (Index: 0, Name: "MT"),
+        (Index: 1, Name: "ST"),
+        (Index: 2, Name: "H1"),
+        (Index: 3, Name: "H2")
+
+    };
+
+                foreach (var (index, name) in fourTN)
+                {
+                    var memberObj = accessory.Data.PartyList[index];
+                    var dp = accessory.Data.GetDefaultDrawProperties();
+                    dp.Name = "超增压分摊";
+                    dp.Owner = memberObj;
+                    dp.Scale = new Vector2(5);
+                    dp.Color = accessory.Data.DefaultSafeColor;
+                    dp.DestoryAt = 6000;
+                    accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+                    accessory.Method.TextInfo("分摊", duration: 4700);
+                }
+            }
+        }
+
+
+    }
+
+    [ScriptMethod(
+    name: "超增压",//分摊
+    eventType: EventTypeEnum.StartCasting,
+    eventCondition: new[] { "ActionId:regex:^(45664)$" },
+    userControl: true
+)]
+    public async void 超增压分摊4DPS(Event @event, ScriptAccessory accessory)
+    {
+        if (isText)
+            accessory.Method.TextInfo("分摊", duration: 4700);
+        if (_aeJudge.IsKnockback(@event, accessory))
+        {
+
+
+
+            if (!ParseObjectId(@event["TargetId"], out uint TargetId))
+                return;
+            if (@event.TargetId == 0x40002AF7)
+            {
+                var fourDPS = new[]
+            {
+        (Index: 4, Name: "D1"),
+        (Index: 5, Name: "D2"),
+        (Index: 6, Name: "D3"),
+        (Index: 7, Name: "D4")
+
+    };
+
+                foreach (var (index, name) in fourDPS)
+                {
+                    var memberObj = accessory.Data.PartyList[index];
+                    var dp = accessory.Data.GetDefaultDrawProperties();
+                    dp.Name = "超增压分摊";
+                    dp.Owner = memberObj;
+                    dp.Scale = new Vector2(5);
+                    dp.Color = accessory.Data.DefaultSafeColor;
+                    dp.DestoryAt = 6000;
+                    accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+                    accessory.Method.TextInfo("分摊", duration: 4700);
+                }
+            }
+        }
+    }
 
 
 
