@@ -65,7 +65,7 @@ public class 极格莱杨拉
     [ScriptMethod(
         name: "超增压急行",
         eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(45677|45696)$" },
+        eventCondition: new[] { "ActionId:regex:^(45670)$" },
         userControl: true
     )]
     public void 超增压急行(Event @event, ScriptAccessory accessory)
