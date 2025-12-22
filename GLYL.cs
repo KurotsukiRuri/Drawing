@@ -66,7 +66,7 @@ public class 极格莱杨拉
     [ScriptMethod(
       name: "超增压",//分散
       eventType: EventTypeEnum.StartCasting,
-      eventCondition: new[] { "ActionId:regex:^(45670)$" },
+      eventCondition: new[] { "ActionId:regex:^(45663)$" },
       userControl: true
   )]
     public async void 超增压分散(Event @event, ScriptAccessory accessory)
@@ -99,7 +99,6 @@ public class 极格莱杨拉
             dp.Color = accessory.Data.DefaultDangerColor;
             dp.DestoryAt = 6000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
-            accessory.Method.TextInfo("分散", duration: 4700);
             accessory.Method.TextInfo("分散", duration: 4700);
 
         }
@@ -141,7 +140,7 @@ public class 极格莱杨拉
                 dp.DestoryAt = 6000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
                 accessory.Method.TextInfo("分摊", duration: 4700);
-                accessory.Method.TextInfo("分摊", duration: 4700);
+
             }
         }
 
