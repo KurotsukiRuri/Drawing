@@ -27,7 +27,7 @@ namespace BakaWater77.极格莱杨拉;
    name: "极格莱杨拉",
    territorys: new uint[] { 1308 },
    guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-   version: "0.0.0.4",
+   version: "0.0.0.2",
    author: "Baka-Water77",
    note: null
 )]
@@ -106,7 +106,7 @@ public class 极格莱杨拉
     [ScriptMethod(
     name: "超增压",//分摊
     eventType: EventTypeEnum.StartCasting,
-    eventCondition: new[] { "ActionId:regex:^(45664)$" },
+    eventCondition: new[] { "ActionId:regex:^(45664|45670|45677|45696)$" },
     userControl: true
 )]
     public async void 超增压分摊4TN(Event @event, ScriptAccessory accessory)
@@ -160,7 +160,7 @@ public class 极格莱杨拉
     [ScriptMethod(
     name: "超增压",//分摊
     eventType: EventTypeEnum.StartCasting,
-    eventCondition: new[] { "ActionId:regex:^(45664)$" },
+    eventCondition: new[] { "ActionId:regex:^(45664|45670|45677|45696)$" },
     userControl: true
 )]
     public async void 超增压分摊4DPS(Event @event, ScriptAccessory accessory)
