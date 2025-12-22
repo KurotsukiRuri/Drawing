@@ -51,17 +51,7 @@ public class 极格莱杨拉
     }
     private Dictionary<uint, Event> startCastingCache = new();
 
-    [ScriptMethod(
-    name: "超增压抽雾/急行",
-    eventType: EventTypeEnum.StartCasting,
-    eventCondition: new[] { "ActionId:regex:^(45677|45696|45670)$" },
-    userControl: true
-)]
-    public void 超增压抽雾急行(Event @event, ScriptAccessory accessory)
-    {
-
-
-    }
+    private uint lastTargetIdForDraw = 0;
 
 
     [ScriptMethod(
@@ -108,7 +98,7 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultDangerColor;
-                dp.DestoryAt = 4000;
+                dp.DestoryAt = 5500;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
@@ -130,6 +120,8 @@ public class 极格莱杨拉
             if (isText)
                 accessory.Method.TextInfo("稍后分摊", duration: 4700);
 
+            if (ParseObjectId(@event["TargetId"], out uint TargetId))
+                lastTargetIdForDraw = TargetId;
 
         }
         else if (actionId == 45670 || actionId == 45677 || actionId == 45696) //击退or吸引
@@ -137,7 +129,7 @@ public class 极格莱杨拉
             await Task.Delay(8500);
             if (!ParseObjectId(@event["TargetId"], out uint TargetId))
                 return;
-            if (@event.TargetId == 0x400024A8)
+            if (lastTargetIdForDraw == 0x400024A8)
             {
 
 
@@ -157,7 +149,7 @@ public class 极格莱杨拉
                     dp.Name = "超增压";
                     dp.Owner = memberObj;
                     dp.Scale = new Vector2(5);
-                    dp.Color = accessory.Data.DefaultDangerColor;
+                    dp.Color = accessory.Data.DefaultSafeColor;
                     dp.DestoryAt = 5500;
                     accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
                 }
@@ -181,9 +173,11 @@ public class 极格莱杨拉
         {
             if (isText)
                 accessory.Method.TextInfo("稍后分摊", duration: 4700);
+            if (ParseObjectId(@event["TargetId"], out uint TargetId))
+                lastTargetIdForDraw = TargetId;
 
 
-          
+
         }
         else if (actionId == 45670 || actionId == 45677 || actionId == 45696) //击退or吸引
         {
@@ -191,7 +185,7 @@ public class 极格莱杨拉
 
             if (!ParseObjectId(@event["TargetId"], out uint TargetId))
                 return;
-            if (@event.TargetId == 0x40002AF7)
+            if (lastTargetIdForDraw == 0x40002AF7)
             {
 
                 var ALLmember = new[]
