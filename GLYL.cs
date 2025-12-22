@@ -49,6 +49,7 @@ public class 极格莱杨拉
             return false;
         }
     }
+    #region 抽雾/急行文字提示
     [ScriptMethod(
         name: "超增压抽雾",
         eventType: EventTypeEnum.StartCasting,
@@ -57,8 +58,8 @@ public class 极格莱杨拉
     )]
     public void 超增压抽雾(Event @event, ScriptAccessory accessory)
     {
-        if (isText) accessory.Method.TextInfo("吸引", duration: 4700);
-        _ = 延迟绘图任务(@event, accessory);
+        if (isText)
+            accessory.Method.TextInfo("吸引", duration: 4700);
     }
 
     [ScriptMethod(
@@ -69,13 +70,24 @@ public class 极格莱杨拉
     )]
     public void 超增压急行(Event @event, ScriptAccessory accessory)
     {
-        if (isText) accessory.Method.TextInfo("击退", duration: 4700);
-        _ = 延迟绘图任务(@event, accessory);
+        if (isText)
+            accessory.Method.TextInfo("击退", duration: 4700);
     }
+    #endregion
 
-    private async Task 延迟绘图任务(Event @event, ScriptAccessory accessory)
+    #region 分散绘制
+    [ScriptMethod(
+        name: "超增压分散",
+        eventType: EventTypeEnum.StartCasting,
+        eventCondition: new[] { "ActionId:regex:^(45670)$" },
+        userControl: true
+    )]
+    public async void 超增压分散(Event @event, ScriptAccessory accessory)
     {
-        await Task.Delay(5700); 
+        if (isText)
+            accessory.Method.TextInfo("分散", duration: 4700);
+
+        await Task.Delay(5700); // 延迟 5.7 秒
 
         var ALLmember = new[] { 0, 1, 2, 3, 4, 5, 6, 7 };
         foreach (var i in ALLmember)
@@ -92,24 +104,36 @@ public class 极格莱杨拉
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             accessory.Method.TextInfo("分散", duration: 4700);
         }
+    }
+    #endregion
 
-        if (!ParseObjectId(@event["TargetId"], out uint TargetId)) return;
+    #region 分摊绘制
+    [ScriptMethod(
+        name: "超增压分摊",
+        eventType: EventTypeEnum.StartCasting,
+        eventCondition: new[] { "ActionId:regex:^(45664)$" },
+        userControl: true
+    )]
+    public async void 超增压分摊(Event @event, ScriptAccessory accessory)
+    {
+        if (!ParseObjectId(@event["TargetId"], out uint TargetId))
+            return;
+
+        if (isText)
+            accessory.Method.TextInfo("分摊", duration: 4700);
+
+        await Task.Delay(5700); // 延迟 5.7 秒
 
         (int Index, string Name)[]? pointGroup = null;
 
+        // 判断 TargetId 决定 4TN / 4DPS
         if (@event.TargetId == 0x400024A8) // 4TN
         {
-            pointGroup = new[]
-            {
-                (0, "MT"), (1, "ST"), (2, "H1"), (3, "H2")
-            };
+            pointGroup = new[] { (0, "MT"), (1, "ST"), (2, "H1"), (3, "H2") };
         }
         else if (@event.TargetId == 0x40002AF7) // 4DPS
         {
-            pointGroup = new[]
-            {
-                (4, "D1"), (5, "D2"), (6, "D3"), (7, "D4")
-            };
+            pointGroup = new[] { (4, "D1"), (5, "D2"), (6, "D3"), (7, "D4") };
         }
 
         if (pointGroup != null)
@@ -130,6 +154,8 @@ public class 极格莱杨拉
             }
         }
     }
+    #endregion
+
 
 
     [ScriptMethod(
