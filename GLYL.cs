@@ -27,7 +27,7 @@
        name: "极格莱杨拉",
        territorys: new uint[] { 1308 },
        guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-       version: "0.0.0.2",
+       version: "0.0.0.4",
        author: "Baka-Water77",
        note: null
     )]
@@ -76,7 +76,7 @@
                     lastTargetIdForScatter = TargetId;
 
                
-            
+            ClearLastTargetIds();
             return;
             }
 
@@ -203,7 +203,6 @@
             }
         }
     }
-
 
 
 
