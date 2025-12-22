@@ -56,7 +56,7 @@ public class 极格莱杨拉
     eventCondition: new[] { "ActionId:regex:^(45663)$" },
     userControl: true
 )]
-    public void 超增压分散(Event @event, ScriptAccessory accessory)
+    public async void 超增压分散(Event @event, ScriptAccessory accessory)
     {
         if (isText)
             accessory.Method.TextInfo("分散", duration: 4700);
@@ -71,6 +71,8 @@ public class 极格莱杨拉
         (Index: 6, Name: "D3"),
         (Index: 7, Name: "D4")
     };
+
+        await Task.Delay(12000);
 
 
         foreach (var (index, name) in ALLmember)
@@ -91,7 +93,7 @@ public class 极格莱杨拉
     eventCondition: new[] { "ActionId:regex:^(45664)$" },
     userControl: true
 )]
-    public void 超增压分摊4TN(Event @event, ScriptAccessory accessory)
+    public async void 超增压分摊4TN(Event @event, ScriptAccessory accessory)
     {
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
@@ -107,6 +109,8 @@ public class 极格莱杨拉
         (Index: 3, Name: "H2")
 
     };
+            await Task.Delay(12000);
+
             foreach (var (index, name) in fourTN)
             {
                 var memberObj = accessory.Data.PartyList[index];
@@ -115,21 +119,21 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultSafeColor;
-                dp.DestoryAt = 6000;
+                dp.DestoryAt = 4000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
 
 
     }
-
+        
     [ScriptMethod(
     name: "超增压",//分摊
     eventType: EventTypeEnum.StartCasting,
     eventCondition: new[] { "ActionId:regex:^(45664)$" },
     userControl: true
 )]
-    public void 超增压分摊4DPS(Event @event, ScriptAccessory accessory)
+    public async void 超增压分摊4DPS(Event @event, ScriptAccessory accessory)
     {
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
@@ -145,6 +149,8 @@ public class 极格莱杨拉
         (Index: 7, Name: "D4")
 
     };
+            await Task.Delay(12000);
+
             foreach (var (index, name) in fourDPS)
             {
                 var memberObj = accessory.Data.PartyList[index];
@@ -153,7 +159,7 @@ public class 极格莱杨拉
                 dp.Owner = memberObj;
                 dp.Scale = new Vector2(5);
                 dp.Color = accessory.Data.DefaultSafeColor;
-                dp.DestoryAt = 6000;
+                dp.DestoryAt = 4000;
                 accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
             }
         }
