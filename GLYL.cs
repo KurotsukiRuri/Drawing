@@ -74,7 +74,7 @@ public class 极格莱杨拉
         if (isText)
             accessory.Method.TextInfo("分散", duration: 4700);
 
-        await Task.Delay(1200);
+        await Task.Delay(12000);
 
         var ALLmember = new[]
         {
@@ -113,7 +113,7 @@ public class 极格莱杨拉
     {
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
-        await Task.Delay(1200);
+        await Task.Delay(12000);
 
 
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
@@ -158,7 +158,7 @@ public class 极格莱杨拉
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
 
-        await Task.Delay(1200);
+        await Task.Delay(12000);
 
 
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
