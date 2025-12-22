@@ -86,7 +86,7 @@ userControl: true
     {
         if (isText)
             accessory.Method.TextInfo("分散", duration: 4700);
-        int delay = Math.Max(0, 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
+        int delay = Math.Max(0, 5700 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
         await Task.Delay(delay);
 
         var ALLmember = new[]
@@ -125,7 +125,7 @@ userControl: true
     {
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
-        int delay = Math.Max(0, 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
+        int delay = Math.Max(0, 5700 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
         await Task.Delay(delay);
 
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
@@ -168,7 +168,7 @@ userControl: true
     {
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
-        int delay = Math.Max(0, 4000 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
+        int delay = Math.Max(0, 5700 - (int)(DateTime.Now - 读条时间).TotalMilliseconds);
         await Task.Delay(delay);
 
         if (!ParseObjectId(@event["TargetId"], out uint TargetId))
