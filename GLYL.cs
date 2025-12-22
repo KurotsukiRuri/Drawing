@@ -117,7 +117,8 @@ public class 极格莱杨拉
     {
         if (isText)
             accessory.Method.TextInfo("分散", duration: 4700);
-        if (_aeJudge.IsKnockback(@event, accessory))
+        await Task.Delay(50);
+        if (_aeJudge.IsKnockback(@event,accessory))
         {
 
 
@@ -159,12 +160,8 @@ public class 极格莱杨拉
     {
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
-
-        if (_aeJudge.IsKnockback(@event, accessory))
-        {
-
-
-
+        await Task.Delay(50);
+        if (!_aeJudge.IsKnockback(@event,accessory)) return;
 
             if (!ParseObjectId(@event["TargetId"], out uint TargetId))
                 return;
@@ -195,7 +192,7 @@ public class 极格莱杨拉
         }
 
 
-    }
+    
 
     [ScriptMethod(
     name: "超增压",//分摊
@@ -207,12 +204,13 @@ public class 极格莱杨拉
     {
         if (isText)
             accessory.Method.TextInfo("分摊", duration: 4700);
-        if (_aeJudge.IsKnockback(@event, accessory))
-        {
+        await Task.Delay(50);
+        if (!_aeJudge.IsKnockback(@event,accessory)) return;
 
 
 
-            if (!ParseObjectId(@event["TargetId"], out uint TargetId))
+
+        if (!ParseObjectId(@event["TargetId"], out uint TargetId))
                 return;
             if (@event.TargetId == 0x40002AF7)
             {
@@ -239,7 +237,7 @@ public class 极格莱杨拉
                 }
             }
         }
-    }
+    
 
 
 
