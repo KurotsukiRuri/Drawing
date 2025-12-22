@@ -27,9 +27,10 @@
         "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/GLYL.cs",
         "TerritoryIds": [1308],
         "Note": "仅绘制了P1P2的分摊分散范围P2由于不知道点哪几个人于是干脆把除了T以外的所有人都画出来了",
-        "UpdateInfo": "v0.0.0.1:\n    尝试绘制P2分摊分散范围提示 v0.0.0.2尝试添加P1阶段分摊分散提示及绘制0.0.0.3优化了一下写法"
+        "UpdateInfo": "v0.0.0.1:\n    尝试绘制P2分摊分散范围提示 v0.0.0.2尝试添加P1阶段分摊分散提示及绘制0.0.0.3优化了一下写法 仅绘制了P1P2的分摊分散范围P2由于不知道点哪几个人于是干脆把除了T以外的所有人都画出来了"
     }
 ]
+
 
 
 
