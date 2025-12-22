@@ -27,7 +27,7 @@ namespace BakaWater77.极格莱杨拉;
    name: "极格莱杨拉",
    territorys: new uint[] { 1308 },
    guid: "125b0e7e-1fcc-412f-9d70-49d0ba2a6e3f",
-   version: "0.0.0.4",
+   version: "0.0.0.3",
    author: "Baka-Water77",
    note: null
 )]
@@ -65,7 +65,7 @@ public class 极格莱杨拉
         if (!int.TryParse(@event["ActionId"], out var actionId))
             return;
 
-        // ---------------- 分散 45663 ----------------
+        // 分散 45663
         if (actionId == 45663)
         {
             if (isText)
@@ -78,7 +78,7 @@ public class 极格莱杨拉
             return;
         }
 
-        // ---------------- 分摊 45664 ----------------
+        //分摊 45664
         if (actionId == 45664)
         {
             if (isText)
@@ -90,7 +90,7 @@ public class 极格莱杨拉
             return; 
         }
 
-        // ---------------- 击退/吸引 45670/45677/45696 ----------------
+        // 击退/吸引 45670/45677/45696 
         if (actionId == 45670 || actionId == 45677 || actionId == 45696)
         {
             await Task.Delay(8500);
@@ -111,7 +111,7 @@ public class 极格莱杨拉
         }
     }
 
-    // -------- 辅助方法：绘制圈 --------
+
     private void DrawMembers(ScriptAccessory accessory, int[] indices, Vector4 color, string name)
     {
         foreach (var index in indices)
