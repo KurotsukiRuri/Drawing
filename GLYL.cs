@@ -71,7 +71,9 @@ public class 极格莱杨拉
             if (isText)
                 accessory.Method.TextInfo("稍后分散", duration: 4700);
 
-            // 绘制全员分散圈
+            if (ParseObjectId(@event["TargetId"], out uint TargetId))
+                lastTargetIdForDraw = TargetId;
+           
             await Task.Delay(8500); 
             DrawMembers(accessory, new int[] { 0, 1, 2, 3, 4, 5, 6, 7 },
                         accessory.Data.DefaultDangerColor, "超增压分散");
@@ -124,7 +126,7 @@ public class 极格莱杨拉
             dp.Owner = memberObj;
             dp.Scale = new Vector2(5);
             dp.Color = color;
-            dp.DestoryAt = 5500;
+            dp.DestoryAt = 4000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
         }
     }
