@@ -79,7 +79,7 @@ public class 极格莱杨拉
     [ScriptMethod(
         name: "超增压分散",
         eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(45670)$" },
+        eventCondition: new[] { "ActionId:regex:^(45663)$" },
         userControl: true
     )]
     public async void 超增压分散(Event @event, ScriptAccessory accessory)
