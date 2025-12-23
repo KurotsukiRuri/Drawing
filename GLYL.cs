@@ -56,6 +56,7 @@
         private uint lastTargetIdForShare = 0;    // 分摊
 
 
+
         [ScriptMethod(
             name: "超增压",
             eventType: EventTypeEnum.StartCasting,
@@ -85,12 +86,13 @@
             {
                 if (isText)
                     accessory.Method.TextInfo("稍后分摊", duration: 4700);
+            lastActionIdForScatter = 0;
+            if (ParseObjectId(@event["TargetId"], out uint TargetId))
+            {
 
-                if (ParseObjectId(@event["TargetId"], out uint TargetId))
 
-                lastActionIdForScatter = 0;
-            lastTargetIdForShare = TargetId;
-           
+                lastTargetIdForShare = TargetId;
+            }
             return; 
             }
 
