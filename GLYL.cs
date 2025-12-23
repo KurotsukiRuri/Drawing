@@ -106,7 +106,7 @@
             {
                 DrawMembers(accessory, new int[] { 0, 1, 2, 3 }, accessory.Data.DefaultSafeColor, "超增压");
             }
-            else if (lastTargetIdForShare == 0x40001594) // 4DPS
+            else if (lastTargetIdForShare == 0x40001594|| lastTargetIdForShare==0x40002AF7) // 4DPS
             {
                 DrawMembers(accessory, new int[] { 4, 5, 6, 7 }, accessory.Data.DefaultSafeColor, "超增压");
             }
