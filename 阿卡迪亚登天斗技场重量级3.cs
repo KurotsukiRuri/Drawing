@@ -17,7 +17,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BakaWater77.M10N;
+namespace BakaWater77.M11N;
 
 [ScriptType(
        name: "M11N",
@@ -190,3 +190,4 @@ public class 阿卡迪亚登天斗技场重量级3
         accessory.Method.RemoveDraw(".*");
     }
 }
+
