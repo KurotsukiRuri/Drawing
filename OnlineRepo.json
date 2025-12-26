@@ -28,8 +28,29 @@
         "TerritoryIds": [1308],
         "Note": "仅绘制了P1P2的分摊分散范围P2由于不知道点哪几个人于是干脆把除了T以外的所有人都画出来了",
         "UpdateInfo": "v0.0.0.1:\n    尝试绘制P2分摊分散范围提示 v0.0.0.2尝试添加P1阶段分摊分散提示及绘制0.0.0.3优化了一下写法 仅绘制了P1P2的分摊分散范围P2由于不知道点哪几个人于是干脆把除了T以外的所有人都画出来了"
+    }，
+    {
+        "Name": "M10N",
+        "Guid": "DC98AE77-83FB-4B76-ACA7-45BBCF05DEFE",
+        "Version": "0.0.0.1",
+        "Author": "Baka-Water77",
+        "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/%E9%98%BF%E5%8D%A1%E8%BF%AA%E4%BA%9A%E7%99%BB%E5%A4%A9%E6%96%97%E6%8A%80%E5%9C%BA%E9%87%8D%E9%87%8F%E7%BA%A72.cs",
+        "TerritoryIds": [1322],
+        "Note": "除了那个连线不知道怎么画以外，感觉其他的也没啥好画的（）",
+        "UpdateInfo": "v0.0.0.1:\n    "
+    },
+    {
+        "Name": "M11N",
+        "Guid": "B0058EC8-4429-4BB7-B223-68DE8B115D04",
+        "Version": "0.0.0.1",
+        "Author": "Baka-Water77",
+        "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/%E9%98%BF%E5%8D%A1%E8%BF%AA%E4%BA%9A%E7%99%BB%E5%A4%A9%E6%96%97%E6%8A%80%E5%9C%BA%E9%87%8D%E9%87%8F%E7%BA%A73.cs",
+        "TerritoryIds": [1324],
+        "Note": "只画了前半部分，后面有时间再说吧.jpg",
+        "UpdateInfo": "v0.0.0.1:\n    "
     }
 ]
+
 
 
 
