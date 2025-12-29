@@ -32,12 +32,12 @@
     {
         "Name": "M10N",
         "Guid": "DC98AE77-83FB-4B76-ACA7-45BBCF05DEFE",
-        "Version": "0.0.0.1",
+        "Version": "0.0.0.2",
         "Author": "Baka-Water77",
         "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/%E9%98%BF%E5%8D%A1%E8%BF%AA%E4%BA%9A%E7%99%BB%E5%A4%A9%E6%96%97%E6%8A%80%E5%9C%BA%E9%87%8D%E9%87%8F%E7%BA%A72.cs",
         "TerritoryIds": [1322],
-        "Note": "除了那个连线不知道怎么画以外，感觉其他的也没啥好画的（）",
-        "UpdateInfo": "v0.0.0.1:\n    "
+        "Note": "（）",
+        "UpdateInfo": "v0.0.0.1:\n    v0.0.0.2爆赞Usami老师写的超绝转转蛇连线！"
     },
     {
         "Name": "M11N",
@@ -50,6 +50,7 @@
         "UpdateInfo": "v0.0.0.1:\n    "
     }
 ]
+
 
 
 
