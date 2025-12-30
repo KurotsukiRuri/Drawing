@@ -1,4 +1,4 @@
-﻿using KodakkuAssist.Data;
+using KodakkuAssist.Data;
 using KodakkuAssist.Extensions;
 using KodakkuAssist.Module.Draw;
 using KodakkuAssist.Module.Draw.Manager;
@@ -103,7 +103,7 @@ public class 阿卡迪亚登天斗技场重量级3
             {
                 var dp = accessory.Data.GetDefaultDrawProperties();
                 dp.Name = "十字";
-            dp.Position = @event.EffectPosition;
+                dp.Position = @event.EffectPosition;
                 dp.Scale = new Vector2(10, 60);
                 dp.Color = accessory.Data.DefaultDangerColor;
                 dp.Rotation = rot;
@@ -119,7 +119,7 @@ public class 阿卡迪亚登天斗技场重量级3
           )]
     public void 连线依次进行的钢铁月环十字(Event @event, ScriptAccessory accessory)
     {
-        if (@event.SourceId == 0x400031DD || @event.SourceId == 0x400031DC)
+        if (@event.SourceDataId() == 19185)
         {
             var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "月环";
@@ -129,7 +129,7 @@ public class 阿卡迪亚登天斗技场重量级3
             dp.DestoryAt = 17000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
         }
-        else if (@event.SourceId == 0x400031DF|| @event.SourceId == 0x400031DE)
+        else if (@event.SourceDataId() == 19184)
         {
             var dp = accessory.Data.GetDefaultDrawProperties();
             dp.Name = "钢铁";
@@ -139,7 +139,7 @@ public class 阿卡迪亚登天斗技场重量级3
             dp.DestoryAt = 17000;
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
         }
-        else if (@event.SourceId == 0x400031DB|| @event.SourceId == 0x400031DA)
+        else if (@event.SourceDataId() ==19186)
         {
             float[] rotations = { @event.SourceRotation, @event.SourceRotation + MathF.PI, @event.SourceRotation + MathF.PI / 2, @event.SourceRotation - MathF.PI / 2 };
             foreach (var rot in rotations)
@@ -191,3 +191,10 @@ public class 阿卡迪亚登天斗技场重量级3
     }
 }
 
+public static class EventExtensions
+{
+    public static uint SourceDataId(this Event @event)
+    {
+        return JsonConvert.DeserializeObject<uint>(@event["SourceDataId"]);
+    }
+}
