@@ -19,6 +19,13 @@ using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.Graphics.Vfx;
 
 namespace BakaWater77.M10N;
+public static class EventExtensions
+{
+    public static Vector3 SourcePosition(this Event @event)
+    {
+        return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
+    }
+}
 
 [ScriptType(
        name: "M10S BlueLinePoint",
@@ -29,13 +36,7 @@ namespace BakaWater77.M10N;
        note: null
     )]
 
-public static class EventExtensions
-{
-    public static Vector3 SourcePosition(this Event @event)
-    {
-        return JsonConvert.DeserializeObject<Vector3>(@event["SourcePosition"]);
-    }
-}
+
 public class M10S
 {
     public bool isText { get; set; } = true;
@@ -80,4 +81,5 @@ public class M10S
             accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
         }
     }
+
 }
