@@ -48,8 +48,19 @@
         "TerritoryIds": [1324],
         "Note": "只画了前半部分，后面有时间再说吧.jpg",
         "UpdateInfo": "v0.0.0.1:\n    "
-    }
+    },
+     {
+        "Name": "M10S BlueLinePoint",
+        "Guid": "C328CC14-B074-4196-BA4C-161020987536",
+        "Version": "0.0.0.1",
+        "Author": "Baka-Water77",
+        "DownloadUrl": "https://raw.githubusercontent.com/KurotsukiRuri/Drawing/refs/heads/main/M10SBlueLine.cs",
+        "TerritoryIds": [1323],
+        "Note": "",
+        "UpdateInfo": "v0.0.0.1:\n    "
+    
 ]
+
 
 
 
