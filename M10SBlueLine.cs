@@ -47,7 +47,7 @@ public class M10S
     [ScriptMethod(
         name: "极限浪波 记录",
         eventType: EventTypeEnum.StartCasting,
-        eventCondition: new[] { "ActionId:regex:^(4653[34])$" }, // 3是红 4是蓝
+        eventCondition: new[] { "ActionId:regex:^(4653[36])$" }, // 3是红 4是蓝
         userControl: true
     )]
     public void RecordBoss(Event @event, ScriptAccessory accessory)
@@ -131,4 +131,5 @@ public class M10S
         };
     }
 }
+
 
