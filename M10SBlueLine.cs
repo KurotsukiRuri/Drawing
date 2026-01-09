@@ -40,7 +40,7 @@ namespace BakaWater77.M10N
     }
 
     [ScriptType(
-        name: "M10S 蓝线指路",
+        name: "M10SBlueLine",
         territorys: new uint[] { 1323 },
         guid: "C328CC14-B074-4196-BA4C-161020987536",
         version: "0.0.0.1",
@@ -160,4 +160,5 @@ namespace BakaWater77.M10N
     }
 
 }
+
 
