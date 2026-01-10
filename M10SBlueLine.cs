@@ -61,7 +61,7 @@ namespace BakaWater77.M10N
         name: "M10S 蓝线指路",
         territorys: new uint[] { 1323 },
         guid: "C328CC14-B074-4196-BA4C-161020987536",
-        version: "0.0.0.1",
+        version: "0.0.0.2",
         author: "Baka-Water77"
     )]
     public class M10S
@@ -247,4 +247,5 @@ namespace BakaWater77.M10N
 
 
 }
+
 
