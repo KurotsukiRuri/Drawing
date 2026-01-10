@@ -37,10 +37,28 @@ namespace BakaWater77.M10N
 
             sa.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Rect, dp);
         }
+
+        public static DrawPropertiesEdit WaypointDp(this ScriptAccessory sa, Vector3 pos, uint duration, uint delay = 0, string name = "Waypoint")
+        {
+            var dp = sa.Data.GetDefaultDrawProperties();
+            dp.Name = name;
+            dp.Color = sa.Data.DefaultSafeColor;
+            dp.Owner = sa.Data.Me;
+            dp.TargetPosition = pos;
+            dp.DestoryAt = duration;
+            dp.Delay = delay;
+            dp.Scale = new Vector2(2);
+            dp.ScaleMode = ScaleMode.YByDistance;
+            return dp;
+        }
+        public static uint TargetId(this Event e)
+        {
+            return uint.Parse(e["TargetId"]);
+        }
     }
 
     [ScriptType(
-        name: "M10SBlueLine",
+        name: "M10S 蓝线指路",
         territorys: new uint[] { 1323 },
         guid: "C328CC14-B074-4196-BA4C-161020987536",
         version: "0.0.0.1",
@@ -49,8 +67,11 @@ namespace BakaWater77.M10N
     public class M10S
     {
 
+
+
         public static Vector3? BluePos;
         public static Vector3? RedPos;
+ 
 
 
         private static Vector3? TargetPos;
@@ -75,6 +96,7 @@ namespace BakaWater77.M10N
             TryDraw(accessory);
         }
 
+
         private void TryDraw(ScriptAccessory accessory)
         {
             if (BluePos == null || RedPos == null)
@@ -94,7 +116,7 @@ namespace BakaWater77.M10N
             };
 
             var dp = accessory.Data.GetDefaultDrawProperties();
-            dp.Name = "终点";
+            dp.Name = "蓝线终点";
             dp.Position = TargetPos.Value;
             dp.Scale = new Vector2(4);
             dp.Color = accessory.Data.DefaultSafeColor;
@@ -103,6 +125,24 @@ namespace BakaWater77.M10N
 
             BluePos = null;
             RedPos = null;
+
+
+            var dpR = accessory.Data.GetDefaultDrawProperties();
+            dpR.Name = "红线终点";
+            dpR.Position = GetFireTarget(TargetPos.Value);
+            dpR.Scale = new Vector2(4);
+            dpR.Color = accessory.Data.DefaultDangerColor;
+            dpR.DestoryAt = 6000;
+            accessory.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+        }
+        private Vector3 GetFireTarget(Vector3 blueTarget)
+        {
+            float threshold = 0.5f;
+            if (blueTarget == GetTargetPosition(Quad.Q1)) return new Vector3(105.3f, -0.0f, 117.5f);  // 1点 {105.52, -0.00, 82.60}
+            if (blueTarget == GetTargetPosition(Quad.Q2)) return new Vector3(92.6f, -0.0f, 117.7f);   // 2点
+            if (blueTarget == GetTargetPosition(Quad.Q3)) return new Vector3(94f, 0.0f, 81.5f); // 3点94f, 0.0f, 81.5f
+            if (blueTarget == GetTargetPosition(Quad.Q4)) return new Vector3(109f, 0.0f, 86f);// 4点 {109.25, -0.00, 83.82}
+            return Vector3.Zero;
         }
 
 
@@ -116,14 +156,58 @@ namespace BakaWater77.M10N
         {
             if (TargetPos == null)
                 return;
+            
+            
+            if (@event.TargetId() != sa.Data.Me)
+                return;
 
-            sa.DrawGuidance(
+            uint targetPlayerId = @event.TargetId();
 
-                TargetPos.Value,   
-                0,                 
-                5000,              
+            var dp = sa.WaypointDp(
+                TargetPos.Value, 
+                6000,            
+                0,
                 "水线指路"
             );
+
+            sa.Method.SendDraw(
+                DrawModeEnum.Imgui,
+                DrawTypeEnum.Displacement,
+                dp
+            );
+        }
+
+        [ScriptMethod(
+   name: "火圈点名指路",
+   eventType: EventTypeEnum.TargetIcon,
+   eventCondition: new[] { "Id:027C" },
+   userControl: true
+)]
+        
+        public void FireLineGuidance(Event @event, ScriptAccessory sa)
+        {
+            if (TargetPos == null)
+                return;
+
+
+            Vector3 fireTarget = GetFireTarget(TargetPos.Value);
+            if (fireTarget == Vector3.Zero) return;
+
+
+            var dp = sa.Data.GetDefaultDrawProperties();
+            dp.Name = "火圈终点";
+            dp.Position = fireTarget;
+            dp.Scale = new Vector2(4);
+            dp.Color = sa.Data.DefaultDangerColor;
+            dp.DestoryAt = 6000;
+            sa.Method.SendDraw(DrawModeEnum.Default, DrawTypeEnum.Circle, dp);
+
+
+            if (@event.TargetId() == sa.Data.Me)
+            {
+                var line = sa.WaypointDp(fireTarget, 6000, 0, "火圈指路");
+                sa.Method.SendDraw(DrawModeEnum.Imgui, DrawTypeEnum.Displacement, line);
+            }
         }
 
         private enum Quad
@@ -149,16 +233,18 @@ namespace BakaWater77.M10N
         {
             return q switch
             {
-                Quad.Q1 => new Vector3(87.47f, 0.0f, 86.89f),
-                Quad.Q2 => new Vector3(112.64f, 0.0f, 86.95f),
-                Quad.Q3 => new Vector3(112.49f, 0.0f, 113.11f),
-                Quad.Q4 => new Vector3(87.32f, 0.0f, 113.20f),
+                Quad.Q1 => new Vector3(89.91f, 0.0f, 84.38f), //{ 89.91, -0.00, 84.38 }
+                Quad.Q2 => new Vector3(110.18f, 0.00f, 83.94f),//{110.18, 0.00, 83.94}
+                Quad.Q3 => new Vector3(110.32f, 0.00f, 115.26f),//{110.32, 0.00, 115.26}
+                Quad.Q4 => new Vector3(89.44f, 0.0f, 115.32f),//{89.44, -0.00, 115.32}
                 _ => Vector3.Zero
             };
 
         }
+       
+
     }
 
-}
 
+}
 
